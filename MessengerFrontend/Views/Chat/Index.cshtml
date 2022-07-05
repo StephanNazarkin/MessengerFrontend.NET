@@ -1,0 +1,169 @@
+﻿@{
+    ViewData["Title"] = "Chat Title";
+    Layout = "_LayoutChats";
+}
+<div class="chat-wrapper" id="chat-page">
+    <div class="chat-header border-bottom p-2 d-flex justify-content-between align-items-center" style="height: 65px;">
+        <div class="chat-title">
+            <h5 class="mb-1">Chat 3</h5>
+            <p class="mb-0" style="font-size: 14px;">4 members</p>
+        </div>
+
+        <div class="chat-actions d-flex">
+
+            <div class="chat-action-item ms-4">
+                <a href="#inviteUser" data-bs-toggle="modal" data-bs-target="#inviteFriendModal" class="fs-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="chat-action-item ms-4">
+                <a href="#members" data-bs-toggle="modal" data-bs-target="#chatMembersModal" class="fs-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                        <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="chat-action-item ms-4">
+                <a href="#leaveFromChat" class="fs-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <div class="messages-wrapper">
+        <div class="messages-list">
+            <div class="message message-me">
+                <p class="from">User</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-them">
+                <p class="from">User2</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-me">
+                <p class="from">User</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-them">
+                <p class="from">User2</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-me">
+                <p class="from">User</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-them">
+                <p class="from">User2</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-me">
+                <p class="from">User</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-them">
+                <p class="from">User2</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-me">
+                <p class="from">User</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-them">
+                <p class="from">User2</p>
+                <p>Text</p>
+            </div>
+            <div class="message message-me">
+                <p class="from">User</p>
+                <p>Text</p>
+            </div>
+        </div>
+    </div>
+    <form>
+        <div class="input-group input-group-lg">
+            <input class="form-control rounded-0" placeholder="Message..." type="text" style="box-shadow: none;">
+            <button class="btn btn-outline-secondary rounded-0" type="button" id="button-addon2" style="box-shadow: none;">Send</button>
+        </div>
+    </form>
+</div>
+
+
+<!-- members -->
+<div class="modal fade" id="chatMembersModal" tabindex="-1" aria-labelledby="chatMembersModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chatMembersModalLabel">Members</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center border-top border-bottom p-1">
+                    <p class="m-0">
+                        User Name 1
+                    </p>
+                    <div>
+                        <button type="button" class="btn btn-success">Set Admin</button>
+                        <button type="button" class="btn btn-danger">Kick</button>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center border-top border-bottom p-1">
+                    <p class="m-0">
+                        User Name 2
+                    </p>
+                    <div>
+                        <button type="button" class="btn btn-success">Set Admin</button>
+                        <button type="button" class="btn btn-danger">Kick</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- members -->
+
+<!-- invite friend -->
+<div class="modal fade" id="inviteFriendModal" tabindex="-1" aria-labelledby="inviteFriendModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="inviteFriendModalLabel">Invite Friend</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center border-top border-bottom p-1">
+                    <p class="m-0">
+                        User Name 1
+                    </p>
+                    <div>
+                        <button type="button" class="btn btn-primary">Invite</button>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center border-top border-bottom p-1">
+                    <p class="m-0">
+                        User Name 2
+                    </p>
+                    <div>
+                        <button type="button" class="btn btn-primary">Invite</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- invite friend -->
