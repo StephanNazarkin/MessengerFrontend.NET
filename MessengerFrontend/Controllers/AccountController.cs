@@ -18,5 +18,10 @@ namespace MessengerFrontend.Controllers
         {
             return View();
         }
+
+        public IActionResult Settings()
+        {
+            return View();
+        }
     }
 }
