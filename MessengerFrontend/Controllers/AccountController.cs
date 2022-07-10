@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MessengerFrontend.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerFrontend.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IAccountServiceAPI _accountServiceAPI;
+
+        public AccountController(IAccountServiceAPI accountServiceAPI)
+        {
+            _accountServiceAPI = accountServiceAPI;
+        }
         public IActionResult Login()
         {
             return View();
@@ -19,8 +26,10 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
-        public IActionResult Settings()
+        public async Task<IActionResult> Settings()
         {
+            var result = await _accountServiceAPI.GetAllFriends();
+            ViewBag.AllFriends = result;
             return View();
         }
     }
