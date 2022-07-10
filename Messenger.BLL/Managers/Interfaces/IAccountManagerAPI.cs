@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Messenger.BLL.Managers
+namespace Messenger.BLL.Managers.Interfaces
 {
-    public class AccountManager
+    internal interface IAccountManagerAPI
     {
+
     }
 }
