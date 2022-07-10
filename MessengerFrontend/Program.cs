@@ -1,9 +1,13 @@
+using MessengerFrontend.Services;
+using MessengerFrontend.Services.Interfaces;
 using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IChatServiceAPI, ChatServiceAPI>();
+builder.Services.AddTransient<IMessageServiceAPI, MessageServiceAPI>();
 
 builder.Services.AddHttpClient("Messenger", httpClient =>
 {
