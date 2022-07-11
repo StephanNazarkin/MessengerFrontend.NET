@@ -6,13 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<IAccountServiceAPI, AccountServiceAPI>();
 builder.Services.AddTransient<IChatServiceAPI, ChatServiceAPI>();
 builder.Services.AddTransient<IMessageServiceAPI, MessageServiceAPI>();
 
 builder.Services.AddHttpClient("Messenger", httpClient =>
 {
     httpClient.BaseAddress = new Uri("https://localhost:44309/");
-    var token = "";
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ik1haW5Vc2VyIiwibmFtZWlkIjoiOWFhMzRhYzMtNzFiMS00NGQyLTllYjYtN2NkYjRiNTEyN2MwIiwibmJmIjoxNjU3NDYwODczLCJleHAiOjE2NTgwNjU2NzMsImlhdCI6MTY1NzQ2MDg3M30.Vb1_EjtYPETfJZnbNE3UUsonbkrYftqWyA1bPuWIbsA";
     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 });
 
