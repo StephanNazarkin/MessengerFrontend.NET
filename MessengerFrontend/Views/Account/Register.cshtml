@@ -12,20 +12,20 @@
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
-              <form>
+              <form asp-controller="Account" asp-action="TryRegister" method="post">
 
                 <div class="form-outline mb-4">
-                  <input type="text" class="form-control form-control-lg" />
+                  <input type="text" name="userName" class="form-control form-control-lg" />
                   <label class="form-label">UserName</label>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="email" class="form-control form-control-lg" />
+                  <input type="email" name="email" class="form-control form-control-lg" />
                   <label class="form-label"> Email</label>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="password" class="form-control form-control-lg" />
+                  <input type="password" name="password" class="form-control form-control-lg" />
                   <label class="form-label">Password</label>
                 </div>
 
@@ -33,7 +33,7 @@
                   <input type="submit" class="btn btn-primary" value="Create account"/>
                 </div>
 
-                <p class="text-center text-muted mt-5 mb-0">Already have an account? <a href="#!"
+                <p class="text-center text-muted mt-5 mb-0">Already have an account? <a href="/account/login"
                     class="fw-bold text-body"><u>Login here</u></a></p>
 
               </form>
