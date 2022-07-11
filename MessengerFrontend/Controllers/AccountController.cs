@@ -22,7 +22,7 @@ namespace MessengerFrontend.Controllers
         public async Task<IActionResult> TryLogin(UserViewModel model)
         {
             await _accountServiceAPI.Login(model);
-
+ 
             return Redirect("~/Chat/Index/");
         }
         

@@ -1,5 +1,6 @@
 ﻿using MessengerFrontend.Models.Users;
 using MessengerFrontend.Services.Interfaces;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace MessengerFrontend.Services
@@ -7,10 +8,12 @@ namespace MessengerFrontend.Services
     public class AccountServiceAPI : IAccountServiceAPI
     {
         private readonly HttpClient _httpClient;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public AccountServiceAPI(IHttpClientFactory httpClientFactory)
+        public AccountServiceAPI(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClientFactory.CreateClient("Messenger");
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<UserViewModel> Register(UserViewModel model) 
@@ -29,6 +32,9 @@ namespace MessengerFrontend.Services
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
+
+            _httpContextAccessor.HttpContext.Session.SetString("Token", user.Token);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _httpContextAccessor.HttpContext.Session.GetString("Token"));
 
             return user;
         }
