@@ -13,11 +13,8 @@ builder.Services.AddTransient<IMessageServiceAPI, MessageServiceAPI>();
 
 builder.Services.AddDistributedMemoryCache();
 
-builder.Services.AddSession(options =>
-{
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
+builder.Services.AddSession();
+
 
 builder.Services.AddHttpClient("Messenger", httpClient =>
 {
