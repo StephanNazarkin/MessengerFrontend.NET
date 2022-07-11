@@ -24,9 +24,9 @@
                 <div class="list-group list-group-flush border-top border-bottom">
                     @foreach (var chat in ViewBag.AllChats)
                     {
-                        <a class="list-group-item list-group-item-action" href="~/chat/index">
-                            <h5>@chat.topic</h5>
-                            <p>4 members</p>
+                        <a class="list-group-item list-group-item-action" href="~/chat/index/@chat.Id">
+                            <h5>@chat.Topic</h5>
+                            <p>@chat.Users.Count members</p>
                         </a>
                     }
                 </div>

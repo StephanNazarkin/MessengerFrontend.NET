@@ -12,7 +12,7 @@ namespace MessengerFrontend.Services
         {
             _httpClient = httpClientFactory.CreateClient("Messenger");
         }
-
+        
         public async Task<IEnumerable<UserViewModel>> GetAllFriends()
         {
             var httpResponseMessage = await _httpClient.GetAsync("Account/GetAllFriends");
@@ -35,10 +35,10 @@ namespace MessengerFrontend.Services
 
             return blockedUsers;
         }
-
-        public async Task<UserViewModel> UpdateUser(UserUpdateModel userModel)
+        
+        public async Task<UserViewModel> GetCurrentUser()
         {
-            var httpResponseMessage = await _httpClient.PutAsJsonAsync("Account/UpdateUser", userModel);
+            var httpResponseMessage = await _httpClient.GetAsync("Account/GetCurrentUser");
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 

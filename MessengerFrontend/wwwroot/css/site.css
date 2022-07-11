@@ -67,7 +67,7 @@ html {
     overflow: auto;
     display: flex;
     flex: 1 1 auto;
-    flex-direction: column-reverse;
+    flex-direction: column;
     flex-wrap: nowrap;
     margin-top: auto;
     align-content: stretch;

@@ -1,11 +1,18 @@
-﻿namespace MessengerFrontend.Models.Users
+﻿using System.Text.Json.Serialization;
+
+namespace MessengerFrontend.Models.Users
 {
     public class UserViewModel
     {
-        public string Id { get; set; }
-        public string userName { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
-        public string Token { get; set; }
+        [JsonPropertyName("id")]
+        public string? Id { get; set; }
+        [JsonPropertyName("userName")]
+        public string? UserName { get; set; }
+        [JsonPropertyName("password")]
+        public string? Password { get; set; }
+        [JsonPropertyName("email")]
+        public string? Email { get; set; }
+        [JsonPropertyName("token")]
+        public string? Token { get; set; }
     }
 }

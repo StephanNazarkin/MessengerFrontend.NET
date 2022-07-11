@@ -6,7 +6,6 @@ namespace MessengerFrontend.Services.Interfaces
     {
         public Task<IEnumerable<UserViewModel>> GetAllFriends();
         public Task<IEnumerable<UserViewModel>> GetAllBlockedUsers();
-
-        public Task<UserViewModel> UpdateUser(UserUpdateModel userModel);
+        public Task<UserViewModel> GetCurrentUser();
     }
 }
