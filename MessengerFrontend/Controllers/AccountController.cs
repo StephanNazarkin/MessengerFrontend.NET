@@ -12,14 +12,32 @@ namespace MessengerFrontend.Controllers
         {
             _accountServiceAPI = accountServiceAPI;
         }
+
         public IActionResult Login()
         {
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> TryLogin(UserViewModel model)
+        {
+            UserViewModel loggedUser = await _accountServiceAPI.Login(model);
+            HttpContext.Session.SetString("Token", loggedUser.Token);
+ 
+            return Redirect("~/Chat/Index/");
+        }
+        
         public IActionResult Register()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TryRegister(UserViewModel model)
+        {
+            await _accountServiceAPI.Register(model);
+
+            return Redirect("~/Account/ConfirmEmail/");
         }
 
         public IActionResult ConfirmEmail()
@@ -63,8 +81,8 @@ namespace MessengerFrontend.Controllers
 
         public async void UpdateUser(UserUpdateModel userModel)
         {
-            var result = await _accountServiceAPI.UpdateUser(userModel);
-            ViewBag.CurrentUser = result; 
+            //var result = await _accountServiceAPI.UpdateUser(userModel);
+            //ViewBag.CurrentUser = result; 
         }
     }
 }
