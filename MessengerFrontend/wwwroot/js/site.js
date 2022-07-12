@@ -8,4 +8,6 @@ $(document).ready(function () {
         var page = $(this).attr('href');
         $('.modal-content-body').load(page);
     });
+
+    $('.messages-list').scrollTop($('.messages-list')[0].scrollHeight);
 });
