@@ -6,13 +6,23 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
-    @foreach (var friend in ViewBag.AllBlockedUsers)
+    @foreach (var blockedUser in ViewBag.AllBlockedUsers)
             {
                 <div class="d-flex justify-content-between align-items-center border-top border-bottom p-1">
                     <p class="m-0">
-                        @friend.userName
+                        @blockedUser.UserName
                     </p>
-                    <button type="button" class="btn btn-primary" style="float: right;">Remove</button>
+                    @Html.ActionLink(
+                            "Unblock User",                                                  // linkText
+                            "UnblockUser",                                    // actionName
+                            "Account",                                                   // routeValues
+                            new {                                                     // htmlAttributes
+                                userId = @blockedUser.Id
+                            },
+                            new Dictionary<string, object>{
+                                {"class","btn btn-primary"}
+                            }
+                    )
                 </div>
             }
 </div>

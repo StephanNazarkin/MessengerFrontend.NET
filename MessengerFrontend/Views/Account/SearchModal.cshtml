@@ -5,10 +5,52 @@
 	<h5 class="modal-title" id="searchModalLabel">Search</h5>
 	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
+<form asp-controller="Account" asp-action="GetUserByUserName" method="get">
 <div class="modal-body">
-	<input type="email" class="form-control form-control-lg" placeholder="Search"/>
+	<input type="text" class="form-control form-control-lg" placeholder="Search"/>
+
+    @foreach (var user in ViewBag.AllUsers)
+            {
+            @if (ViewBag.CurrentUser.Id != user.Id)
+                {
+                    <div class="d-flex justify-content-between align-items-center border-top border-bottom p-1">
+                        <p class="m-0">
+                            @user.UserName
+                        </p>
+                        <div>
+                            @Html.ActionLink(
+                                "Block User",                                                  // linkText
+                                "BlockUser",                                    // actionName
+                                "Account",                                                   // routeValues
+                                new {                                                     // htmlAttributes
+                                    userId = @user.Id
+                                },
+                                new Dictionary<string, object>{
+                                    {"class","btn btn-primary"}
+                                }
+
+                            )
+
+                            @Html.ActionLink(
+                                "Add Friend",                                                  // linkText
+                                "AddFriend",                                    // actionName
+                                "Account",                                                   // routeValues
+                                new {                                                     // htmlAttributes
+                                    userId = @user.Id
+                                },
+                                new Dictionary<string, object>{
+                                    {"class","btn btn-primary"}
+                                }
+
+                            )
+                        </div>
+                    </div>
+                }
+
+            }
 </div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-primary" style="float: right;">Search</button>
+	<button type="sumbit" class="btn btn-primary" style="float: right;">Search</button>
 </div>
+</form>

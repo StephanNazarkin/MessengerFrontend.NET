@@ -66,5 +66,76 @@ namespace MessengerFrontend.Services
 
             return user;
         }
+
+        public async Task<UserViewModel> GetUserByUserName(string userName)
+        {
+            var httpResponseMessage = await _httpClient.
+                GetAsync(string.Format("/Account/GetUserByUserName?userName={0}", userName));
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
+
+            return user;
+        }
+
+        public async Task<IEnumerable<UserViewModel>> GetAllUsers()
+        {
+            var httpResponseMessage = await _httpClient.GetAsync("Account/GetAllUsers");
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var allUsers = await JsonSerializer.DeserializeAsync
+                <IEnumerable<UserViewModel>>(contentStream);
+
+            return allUsers;
+        }
+
+        public async Task<UserViewModel> AddFriend(string userId)
+        {
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/AddFriend", userId);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
+
+            return user;
+        }
+
+        public async Task<UserViewModel> DeleteFriend(string userId)
+        {
+            var httpResponseMessage = await _httpClient.DeleteAsync(string.Format("Account/DeleteFriend?friendId={0}", userId));
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
+
+            return user;
+        }
+
+        public async Task<UserViewModel> BlockUser(string userId)
+        {
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/BlockUser", userId);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
+
+            return user;
+        }
+
+        public async Task<UserViewModel> UnblockUser(string userId)
+        {
+            var httpResponseMessage = await _httpClient.DeleteAsync(string.Format("Account/UnblockUser?blockedUserId={0}", userId));
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
+
+            return user;
+        }
+
+        public async Task<UserViewModel> UpdateUser(UserUpdateModel userModel)
+        {
+            var httpResponseMessage = await _httpClient.PutAsJsonAsync("Account/UpdateUser", userModel);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
+
+            return user;
+        }
     }
 }
