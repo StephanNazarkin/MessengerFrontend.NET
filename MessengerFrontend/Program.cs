@@ -10,6 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IAccountServiceAPI, AccountServiceAPI>();
 builder.Services.AddTransient<IChatServiceAPI, ChatServiceAPI>();
 builder.Services.AddTransient<IMessageServiceAPI, MessageServiceAPI>();
+builder.Services.AddTransient<IAccountServiceAPI, AccountServiceAPI>();
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -18,7 +19,7 @@ builder.Services.AddSession();
 
 builder.Services.AddHttpClient("Messenger", httpClient =>
 {
-    httpClient.BaseAddress = new Uri("https://localhost:44309/");
+    httpClient.BaseAddress = new Uri(builder.Configuration["Api"]);
 });
 
 var app = builder.Build();
