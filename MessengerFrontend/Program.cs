@@ -19,9 +19,8 @@ builder.Services.AddSession();
 builder.Services.AddHttpClient("Messenger", httpClient =>
 {
     httpClient.BaseAddress = new Uri("https://localhost:44309/");
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ik1haW5Vc2VyIiwibmFtZWlkIjoiOWFhMzRhYzMtNzFiMS00NGQyLTllYjYtN2NkYjRiNTEyN2MwIiwibmJmIjoxNjU3NjE3NjE1LCJleHAiOjE2NTgyMjI0MTUsImlhdCI6MTY1NzYxNzYxNX0.MQCU3T2HqKxNCqyUdaNCRkk31scce4qA2LSUBlFuNFM";
-    //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-    httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+    var token = "";
+    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 });
 
 var app = builder.Build();
