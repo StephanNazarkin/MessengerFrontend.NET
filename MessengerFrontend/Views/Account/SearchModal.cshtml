@@ -19,10 +19,10 @@
                         </p>
                         <div>
                             @Html.ActionLink(
-                                "Block User",                                                  // linkText
-                                "BlockUser",                                    // actionName
-                                "Account",                                                   // routeValues
-                                new {                                                     // htmlAttributes
+                                "Block User",
+                                "BlockUser",
+                                "Account",
+                                new {
                                     userId = @user.Id
                                 },
                                 new Dictionary<string, object>{
@@ -32,10 +32,10 @@
                             )
 
                             @Html.ActionLink(
-                                "Add Friend",                                                  // linkText
-                                "AddFriend",                                    // actionName
-                                "Account",                                                   // routeValues
-                                new {                                                     // htmlAttributes
+                                "Add Friend",
+                                "AddFriend",
+                                "Account",
+                                new {
                                     userId = @user.Id
                                 },
                                 new Dictionary<string, object>{

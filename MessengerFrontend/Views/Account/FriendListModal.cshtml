@@ -13,10 +13,10 @@
                         @friend.UserName
                     </p>
                     @Html.ActionLink(
-                            "Delete Friend",                                                  // linkText
-                            "DeleteFriend",                                    // actionName
-                            "Account",                                                   // routeValues
-                            new {                                                     // htmlAttributes
+                            "Delete Friend",
+                            "DeleteFriend",
+                            "Account",
+                            new {
                                 userId = @friend.Id
                             },
                             new Dictionary<string, object>{

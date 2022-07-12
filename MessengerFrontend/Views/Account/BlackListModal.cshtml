@@ -13,10 +13,10 @@
                         @blockedUser.UserName
                     </p>
                     @Html.ActionLink(
-                            "Unblock User",                                                  // linkText
-                            "UnblockUser",                                    // actionName
-                            "Account",                                                   // routeValues
-                            new {                                                     // htmlAttributes
+                            "Unblock User",
+                            "UnblockUser",
+                            "Account",
+                            new {
                                 userId = @blockedUser.Id
                             },
                             new Dictionary<string, object>{
