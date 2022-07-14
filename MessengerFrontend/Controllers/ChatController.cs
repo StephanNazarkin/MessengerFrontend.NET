@@ -1,4 +1,4 @@
-﻿using MessengerFrontend.Models;
+using MessengerFrontend.Filters;
 using MessengerFrontend.Models.Chats;
 using MessengerFrontend.Models.Messages;
 using MessengerFrontend.Services;
@@ -25,6 +25,7 @@ namespace MessengerFrontend.Controllers
         }
 
         [HttpGet]
+        [AuthorizationFilter]
         public async Task<IActionResult> Index(int id)
         {
             var allChats = await _chatServiceAPI.GetAllChatrooms();
@@ -39,12 +40,14 @@ namespace MessengerFrontend.Controllers
             return View(currentChat);
         }
 
+        [AuthorizationFilter]
         [HttpGet]
         public IActionResult CreateChat()
         {
             return View();
         }
 
+        [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> CreateChat(ChatCreateModel model)
         {
@@ -53,11 +56,13 @@ namespace MessengerFrontend.Controllers
             return Redirect("~/Chat/Index/" + response.Id);
         }
 
+        [AuthorizationFilter]
         public IActionResult EditChat()
         {
             return View();
         }
 
+        [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> GetMembers(int id)
         {
@@ -70,6 +75,7 @@ namespace MessengerFrontend.Controllers
         }
 
         [HttpGet]
+        [AuthorizationFilter]
         public async Task<IActionResult> InviteFriend(int id)
         {
             var friends = await _accountServiceAPI.GetAllFriends();
@@ -78,6 +84,7 @@ namespace MessengerFrontend.Controllers
             return View(friends);
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> AddToChatroom(ChatInviteModel model)
         {
             var result = await _chatServiceAPI.AddToChatroom(model);
@@ -85,6 +92,7 @@ namespace MessengerFrontend.Controllers
             return Redirect("~/Chat/Index/" + result.ChatId);
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> SetAdmin(int userAccountId)
         {
             var response = await _chatServiceAPI.SetAdmin(userAccountId);
@@ -92,6 +100,7 @@ namespace MessengerFrontend.Controllers
             return Redirect("~/Chat/Index/" + response.ChatId);
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> UnsetAdmin(int userAccountId)
         {
             var response = await _chatServiceAPI.UnsetAdmin(userAccountId);
@@ -99,6 +108,7 @@ namespace MessengerFrontend.Controllers
             return Redirect("~/Chat/Index/" + response.ChatId);
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> MuteUser(int userAccountId)
         {
             var response = await _chatServiceAPI.MuteUser(userAccountId);
@@ -106,6 +116,7 @@ namespace MessengerFrontend.Controllers
             return Redirect("~/Chat/Index/" + response.ChatId);
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> UnmuteUser(int userAccountId)
         {
             var response = await _chatServiceAPI.UnmuteUser(userAccountId);
@@ -120,6 +131,7 @@ namespace MessengerFrontend.Controllers
             return Redirect("~/");
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> LeaveChat(int id)
         {
             var response = await _chatServiceAPI.LeaveChat(id);
@@ -128,6 +140,7 @@ namespace MessengerFrontend.Controllers
         }
 
         [HttpPost]
+        [AuthorizationFilter]
         public async Task<IActionResult> SendMessage(MessageCreateModel model)
         {
             bool response = await _messageServiceAPI.SendMessage(model);

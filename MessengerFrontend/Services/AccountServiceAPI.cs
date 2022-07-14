@@ -35,7 +35,6 @@ namespace MessengerFrontend.Services
             return user;
         }
 
-
         public async Task<IEnumerable<UserViewModel>> GetAllFriends()
         {
             var httpResponseMessage = await _httpClient.GetAsync("Account/GetAllFriends");
