@@ -20,7 +20,6 @@ builder.Services.AddSession();
 builder.Services.AddHttpClient("Messenger", httpClient =>
 {
     httpClient.BaseAddress = new Uri(builder.Configuration["Api"]);
-    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiI4OTY2ZjYyZS01ZDZlLTRmYWYtOWM4MS0xZTkyODA4ZGU1OTEiLCJuYmYiOjE2NTc2MjcwMzEsImV4cCI6MTY1ODIzMTgzMSwiaWF0IjoxNjU3NjI3MDMxfQ.Ze9Jc7gJqpvZRm8tjv8zSqYG36Kh6inln24JWld_9Mw");
 });
 
 var app = builder.Build();
