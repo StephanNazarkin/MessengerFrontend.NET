@@ -54,6 +54,16 @@ namespace MessengerFrontend.Services
             return response;
         }
 
+        public async Task<UserAccountViewModel> AddToChatroom(ChatInviteModel model)
+        {
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Chatroom/AddToChatroom", model);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var response = await JsonSerializer.DeserializeAsync<UserAccountViewModel>(contentStream);
+
+            return response;
+        }
+
         public async Task<UserAccountViewModel> GetCurrentUserAccount(int chatId)
         {
             var httpResponseMessage = await _httpClient.GetAsync("Chatroom/GetCurrentUserAccount?chatId=" + chatId);

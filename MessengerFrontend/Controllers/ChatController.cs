@@ -5,6 +5,7 @@ using MessengerFrontend.Services;
 using MessengerFrontend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MessengerFrontend.Controllers
 {
@@ -67,7 +68,23 @@ namespace MessengerFrontend.Controllers
 
             return View(response);
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> InviteFriend(int id)
+        {
+            var friends = await _accountServiceAPI.GetAllFriends();
+            ViewBag.ChatId = id;
+
+            return View(friends);
+        }
+
+        public async Task<IActionResult> AddToChatroom(ChatInviteModel model)
+        {
+            var result = await _chatServiceAPI.AddToChatroom(model);
+
+            return Redirect("~/Chat/Index/" + result.ChatId);
+        }
+
         public async Task<IActionResult> SetAdmin(int userAccountId)
         {
             var response = await _chatServiceAPI.SetAdmin(userAccountId);
@@ -101,11 +118,6 @@ namespace MessengerFrontend.Controllers
             var response = await _chatServiceAPI.KickUser(userAccountId);
 
             return Redirect("~/");
-        }
-
-        public IActionResult InviteFriend()
-        {
-            return View();
         }
 
         public async Task<IActionResult> LeaveChat(int id)

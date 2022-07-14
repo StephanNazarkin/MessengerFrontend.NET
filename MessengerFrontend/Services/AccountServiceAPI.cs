@@ -21,14 +21,15 @@ namespace MessengerFrontend.Services
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
+
             return user;
         }
 
-        public async Task<UserViewModel> Login(UserViewModel model)
+        public async Task<UserViewModel> Login(UserLoginModel model)
         {
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/Register", model);
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/Login", model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
+            
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
