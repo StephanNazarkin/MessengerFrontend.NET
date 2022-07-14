@@ -10,9 +10,20 @@
             {
                 <div class="d-flex justify-content-between align-items-center border-top border-bottom p-1">
                     <p class="m-0">
-                        @friend.userName
+                        @friend.UserName
                     </p>
-                    <button type="button" class="btn btn-primary" style="float: right;">Remove</button>
+                    @Html.ActionLink(
+                            "Delete Friend",
+                            "DeleteFriend",
+                            "Account",
+                            new {
+                                userId = @friend.Id
+                            },
+                            new Dictionary<string, object>{
+                                {"class","btn btn-primary"}
+                            }
+
+                    )
                 </div>
             }
 </div>
