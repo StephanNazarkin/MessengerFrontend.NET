@@ -1,4 +1,5 @@
-﻿using MessengerFrontend.Models.Users;
+﻿using MessengerFrontend.Models.MessageImages;
+using MessengerFrontend.Models.Users;
 using System.Text.Json.Serialization;
 
 namespace MessengerFrontend.Models.Messages
@@ -9,7 +10,8 @@ namespace MessengerFrontend.Models.Messages
         public int Id { get; set; }
         [JsonPropertyName("user")]
         public UserViewModel? User { get; set; }
-        //public ICollection<MessageImageViewModel> images { get; set; }
+        [JsonPropertyName("images")]
+        public ICollection<MessageImageViewModel>? Images { get; set; }
         [JsonPropertyName("text")]
         public string? Text { get; set; }
         [JsonPropertyName("createdTime")]

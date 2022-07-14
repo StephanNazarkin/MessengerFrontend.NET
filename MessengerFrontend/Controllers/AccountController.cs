@@ -1,4 +1,5 @@
-﻿using MessengerFrontend.Models.Users;
+﻿using MessengerFrontend.Filters;
+using MessengerFrontend.Models.Users;
 using MessengerFrontend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +51,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [AuthorizationFilter]
         public IActionResult EditProfileModal()
         {
             return View();
@@ -64,6 +66,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> FriendListModal()
         {
             var allFriends = await _accountServiceAPI.GetAllFriends();
@@ -71,6 +74,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> BlackListModal()
         {
             var allBlockedUsers = await _accountServiceAPI.GetAllBlockedUsers();
@@ -78,6 +82,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [AuthorizationFilter]
         public IActionResult ChangePasswordModal()
         {
             return View();

@@ -26,14 +26,13 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> Login(UserViewModel model)
         {
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/Register", model);
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/Login", model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
         }
-
 
         public async Task<IEnumerable<UserViewModel>> GetAllFriends()
         {

@@ -1,4 +1,5 @@
-﻿using MessengerFrontend.Models;
+using MessengerFrontend.Filters;
+using MessengerFrontend.Models.Chats;
 using MessengerFrontend.Models.Messages;
 using MessengerFrontend.Services;
 using MessengerFrontend.Services.Interfaces;
@@ -23,36 +24,113 @@ namespace MessengerFrontend.Controllers
         }
 
         [HttpGet]
+        [AuthorizationFilter]
         public async Task<IActionResult> Index(int id)
         {
             var allChats = await _chatServiceAPI.GetAllChatrooms();
             var currentChat = await _chatServiceAPI.GetChatroom(id);
-            var currentUser = await _accountServiceAPI.GetCurrentUser();
+            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
+            var members = await _chatServiceAPI.GetAllMembers(id);
+
             ViewBag.AllChats = allChats;
-            ViewBag.CurrentUser = currentUser;
+            ViewBag.CurrentUserAccount = currentUserAccount;
+            ViewBag.Members = members;
 
             return View(currentChat);
         }
 
+        [AuthorizationFilter]
+        [HttpGet]
+        public IActionResult CreateChat()
+        {
+            return View();
+        }
+        
+        [AuthorizationFilter]
+        [HttpPost]
+        public async Task<IActionResult> CreateChat(ChatCreateModel model)
+        {
+            var response = await _chatServiceAPI.CreateChatroom(model);
+
+            return Redirect("~/Chat/Index/" + response.Id);
+        }
+        
+        [AuthorizationFilter]
         public IActionResult EditChat()
         {
-            return View("EditChat");
+            return View();
         }
-
-        public IActionResult Members()
+        
+        [AuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> GetMembers(int id)
         {
-            return View("Members");
+            var response = await _chatServiceAPI.GetAllMembers(id);
+            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
+
+            ViewBag.currentUserAccount = currentUserAccount;
+
+            return View(response);
+        }
+        
+        [AuthorizationFilter]
+        public async Task<IActionResult> SetAdmin(int userAccountId)
+        {
+            var response = await _chatServiceAPI.SetAdmin(userAccountId);
+
+            return Redirect("~/Chat/Index/" + response.ChatId);
+        }
+         
+        [AuthorizationFilter]
+        public async Task<IActionResult> UnsetAdmin(int userAccountId)
+        {
+            var response = await _chatServiceAPI.UnsetAdmin(userAccountId);
+
+            return Redirect("~/Chat/Index/" + response.ChatId);
+        }
+        
+        [AuthorizationFilter]
+        public async Task<IActionResult> MuteUser(int userAccountId)
+        {
+            var response = await _chatServiceAPI.MuteUser(userAccountId);
+
+            return Redirect("~/Chat/Index/" + response.ChatId);
         }
 
+        [AuthorizationFilter]
+        public async Task<IActionResult> UnmuteUser(int userAccountId)
+        {
+            var response = await _chatServiceAPI.UnmuteUser(userAccountId);
+
+            return Redirect("~/Chat/Index/" + response.ChatId);
+        }
+
+        public async Task<IActionResult> KickUser(int userAccountId)
+        {
+            var response = await _chatServiceAPI.KickUser(userAccountId);
+
+            return Redirect("~/");
+        }
+
+        [AuthorizationFilter]
         public IActionResult InviteFriend()
         {
-            return View("InviteFriend");
+            return View();
+        }
+        
+        [AuthorizationFilter]
+        public async Task<IActionResult> LeaveChat(int id)
+        {
+            var response = await _chatServiceAPI.LeaveChat(id);
+
+            return Redirect("~/");
         }
 
         [HttpPost]
+        [AuthorizationFilter]
         public async Task<IActionResult> SendMessage(MessageCreateModel model)
         {
-            await _messageServiceAPI.SendMessage(model);
+            bool response = await _messageServiceAPI.SendMessage(model);
 
             return Redirect("~/Chat/Index/" + model.ChatId);
         }
