@@ -1,11 +1,7 @@
 using MessengerFrontend.Filters;
 using MessengerFrontend.Models.Chats;
-using MessengerFrontend.Models.Messages;
-using MessengerFrontend.Services;
 using MessengerFrontend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Linq;
 
 namespace MessengerFrontend.Controllers
 {
@@ -24,18 +20,20 @@ namespace MessengerFrontend.Controllers
             _accountServiceAPI = accountServiceAPI;
         }
 
-        [HttpGet]
         [AuthorizationFilter]
+        [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
             var allChats = await _chatServiceAPI.GetAllChatrooms();
             var currentChat = await _chatServiceAPI.GetChatroom(id);
             var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
             var members = await _chatServiceAPI.GetAllMembers(id);
+            var messages = await _messageServiceAPI.GetMessagesFromChat(id);
 
             ViewBag.AllChats = allChats;
             ViewBag.CurrentUserAccount = currentUserAccount;
             ViewBag.Members = members;
+            ViewBag.Messages = messages.Reverse();
 
             return View(currentChat);
         }
@@ -62,6 +60,7 @@ namespace MessengerFrontend.Controllers
         {
             var messages = await _messageServiceAPI.GetMessagesFromChat(id);
             var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
+            ViewBag.ChatId = id;
             ViewBag.CurrentUserAccount = currentUserAccount;
 
             return View(messages.Reverse());
@@ -87,6 +86,15 @@ namespace MessengerFrontend.Controllers
 
         [AuthorizationFilter]
         [HttpGet]
+        public async Task<IActionResult> DeleteChat(int id)
+        {
+            var response = await _chatServiceAPI.DeleteChatroom(id);
+
+            return Redirect("~/Home/Index");
+        }
+
+        [AuthorizationFilter]
+        [HttpGet]
         public async Task<IActionResult> GetMembers(int id)
         {
             var response = await _chatServiceAPI.GetAllMembers(id);
@@ -97,8 +105,8 @@ namespace MessengerFrontend.Controllers
             return View(response);
         }
 
-        [HttpGet]
         [AuthorizationFilter]
+        [HttpGet]
         public async Task<IActionResult> InviteFriend(int id)
         {
             var friends = await _accountServiceAPI.GetAllFriends();
@@ -160,15 +168,6 @@ namespace MessengerFrontend.Controllers
             var response = await _chatServiceAPI.LeaveChat(id);
 
             return Redirect("~/");
-        }
-
-        [HttpPost]
-        [AuthorizationFilter]
-        public async Task<IActionResult> SendMessage(MessageCreateModel model)
-        {
-            bool response = await _messageServiceAPI.SendMessage(model);
-
-            return Redirect("~/Chat/Index/" + model.ChatId);
         }
     }
 }

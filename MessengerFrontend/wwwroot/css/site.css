@@ -85,6 +85,25 @@ html {
     margin: 10px;
     word-break: break-word;
     box-sizing: border-box;
+    position: relative;
+}
+
+.message .modal-message {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.message .modal-link {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
 }
 
 .message .from {

@@ -5,6 +5,10 @@
     @foreach (var message in Model)
     {
         <div class="message @(message.User.Id != ViewBag.CurrentUserAccount.User.Id?"message-them":"message-me") ">
+            @if (message.User.Id == ViewBag.CurrentUserAccount.User.Id)
+            {
+                <a href="~/Message/Index/@message.Id" data-bs-toggle="modal" data-bs-target="#modal" class="modal-link"></a>
+            }
             <p class="from">@message.User.UserName</p>
             @if (message.Images is not null)
             {

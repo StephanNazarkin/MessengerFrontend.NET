@@ -47,10 +47,33 @@
 
         </div>
     </div>
-    <div class="messages-wrapper" id="messages-list-wrapper">
-
+    <div class="messages-wrapper" >
+        <div class="messages-list">
+            @foreach (var message in ViewBag.Messages)
+            {
+                <div class="message @(message.User.Id != ViewBag.CurrentUserAccount.User.Id?"message-them":"message-me") ">
+                    @if (message.User.Id == ViewBag.CurrentUserAccount.User.Id)
+                    {
+                        <a href="~/Message/Index/@message.Id?chatId=@Model.Id" data-bs-toggle="modal" data-bs-target="#modal" class="modal-link"></a>
+                    }
+                    <p class="from">@message.User.UserName</p>
+                    @if (message.Images is not null)
+                    {
+                        <div class="images">
+                            @foreach (var image in message.Images)
+                            {
+                                <div class="image-item">
+                                    <img src="@("https://localhost:44309/Images/" + image.Path)" alt="">
+                                </div>
+                            }
+                        </div>
+                    }
+                    <p>@message.Text</p>
+                </div>
+            }
+        </div>
     </div>
-    <form asp-controller="Chat" asp-action="SendMessage" method="post" enctype="multipart/form-data">
+    <form asp-controller="Message" asp-action="SendMessage" method="post" enctype="multipart/form-data">
         @Html.Hidden("ChatId", (object)Model.Id)
         <div class="input-group input-group-lg border">
             <label class="attachment btn .bg-transparent" style="box-shadow: none; border: none;">

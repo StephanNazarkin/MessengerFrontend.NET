@@ -14,6 +14,16 @@ namespace MessengerFrontend.Services
             _httpClient = httpClientFactory.CreateClient("Messenger");
         }
 
+        public async Task<MessageViewModel> GetMessage(int messageId)
+        {
+            var httpResponseMessage = await _httpClient.GetAsync("Message/GetMessage?messageId=" + messageId);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
+
+            return message;
+        }
+
         public async Task<IEnumerable<MessageViewModel>> GetMessagesFromChat(int chatId)
         {
             var httpResponseMessage = await _httpClient.GetAsync("Message/GetMessagesFromChat?chatId=" + chatId);
@@ -55,6 +65,26 @@ namespace MessengerFrontend.Services
                 return false;
 
             return true;
+        }
+
+        public async Task<MessageViewModel> EditMessage(MessageUpdateModel model)
+        {
+            var httpResponseMessage = await _httpClient.PutAsJsonAsync("Message/EditMessage", model);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
+
+            return message;
+        }
+
+        public async Task<bool> DeleteMessage(int id)
+        {
+            var httpResponseMessage = await _httpClient.PutAsJsonAsync("Message/SoftDeleteMessage", id);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var result = await JsonSerializer.DeserializeAsync<bool>(contentStream);
+
+            return result;
         }
     }
 }
