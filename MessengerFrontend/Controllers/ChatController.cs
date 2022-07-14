@@ -1,4 +1,5 @@
-﻿using MessengerFrontend.Models;
+﻿using MessengerFrontend.Filters;
+using MessengerFrontend.Models;
 using MessengerFrontend.Models.Messages;
 using MessengerFrontend.Services;
 using MessengerFrontend.Services.Interfaces;
@@ -23,6 +24,7 @@ namespace MessengerFrontend.Controllers
         }
 
         [HttpGet]
+        [AuthorizationFilter]
         public async Task<IActionResult> Index(int id)
         {
             var allChats = await _chatServiceAPI.GetAllChatrooms();
@@ -34,22 +36,26 @@ namespace MessengerFrontend.Controllers
             return View(currentChat);
         }
 
+        [AuthorizationFilter]
         public IActionResult EditChat()
         {
             return View("EditChat");
         }
 
+        [AuthorizationFilter]
         public IActionResult Members()
         {
             return View("Members");
         }
 
+        [AuthorizationFilter]
         public IActionResult InviteFriend()
         {
             return View("InviteFriend");
         }
 
         [HttpPost]
+        [AuthorizationFilter]
         public async Task<IActionResult> SendMessage(MessageCreateModel model)
         {
             await _messageServiceAPI.SendMessage(model);
