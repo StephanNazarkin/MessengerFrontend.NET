@@ -32,7 +32,7 @@ html {
 
 .sidebar .chatlist-wrapper {
     overflow: auto;
-    height: calc(100% - 64px);
+    height: calc(100% - 64px - 71px);
 }
 
 .sidebar .chatlist-wrapper p {
@@ -88,8 +88,8 @@ html {
 }
 
 .message .from {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
     margin-bottom: 5px;
 }
 

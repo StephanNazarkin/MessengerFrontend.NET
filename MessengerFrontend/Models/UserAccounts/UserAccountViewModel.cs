@@ -10,8 +10,8 @@ namespace MessengerFrontend.Models.UserAccounts
         public int? Id { get; set; }
         [JsonPropertyName("user")]
         public UserViewModel? User { get; set; }
-        [JsonPropertyName("chat")]
-        public ChatViewModel? Password { get; set; }
+        [JsonPropertyName("chatId")]
+        public int? ChatId { get; set; }
         [JsonPropertyName("isBanned")]
         public bool IsBanned { get; set; }
         [JsonPropertyName("isAdmin")]
