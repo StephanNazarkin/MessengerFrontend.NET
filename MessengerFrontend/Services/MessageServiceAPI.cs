@@ -1,5 +1,6 @@
 ﻿using MessengerFrontend.Models.Messages;
 using MessengerFrontend.Services.Interfaces;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace MessengerFrontend.Services
@@ -23,14 +24,37 @@ namespace MessengerFrontend.Services
             return messages;
         }
 
-        public async Task<MessageViewModel> SendMessage(MessageCreateModel model)
+        public async Task<bool> SendMessage(MessageCreateModel model)
         {
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Message/SendMessage", model);
+            if (model.Text is null && model.Files is null)
+                return false;
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(model.ChatId.ToString()), "ChatId");
+
+            if (model.Text is not null)
+                content.Add(new StringContent(model.Text), "Text");
+
+            if (model.Files is not null)
+            {
+                foreach (IFormFile file in model.Files)
+                {
+                    var fileStream = new StreamContent(file.OpenReadStream());
+                    fileStream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                    content.Add(fileStream, "files", file.FileName);
+                }
+            }
+            
+            var httpResponseMessage = await _httpClient.PostAsync("Message/SendMessage", content);
+
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
 
-            return message;
+            if (message is null)
+                return false;
+
+            return true;
         }
     }
 }

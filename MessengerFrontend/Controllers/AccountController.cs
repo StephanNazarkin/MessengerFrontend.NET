@@ -23,7 +23,7 @@ namespace MessengerFrontend.Controllers
         {
             UserViewModel loggedUser = await _accountServiceAPI.Login(model);
             HttpContext.Session.SetString("Token", loggedUser.Token);
- 
+
             return Redirect("~/Chat/Index/");
         }
         
