@@ -16,7 +16,7 @@ namespace MessengerFrontend.Services
 
         public async Task<IEnumerable<MessageViewModel>> GetMessagesFromChat(int chatId)
         {
-            var httpResponseMessage = await _httpClient.GetAsync("Chatroom/GetMessagesFromChat?chatid=" + chatId);
+            var httpResponseMessage = await _httpClient.GetAsync("Message/GetMessagesFromChat?chatId=" + chatId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var messages = await JsonSerializer.DeserializeAsync<IEnumerable<MessageViewModel>>(contentStream);

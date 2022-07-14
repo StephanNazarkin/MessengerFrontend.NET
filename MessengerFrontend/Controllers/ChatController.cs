@@ -57,9 +57,32 @@ namespace MessengerFrontend.Controllers
         }
 
         [AuthorizationFilter]
-        public IActionResult EditChat()
+        [HttpGet]
+        public async Task<IActionResult> GetAllMessages(int id)
         {
-            return View();
+            var messages = await _messageServiceAPI.GetMessagesFromChat(id);
+            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
+            ViewBag.CurrentUserAccount = currentUserAccount;
+
+            return View(messages.Reverse());
+        }
+
+        [AuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> EditChat(int id)
+        {
+            var currentChat = await _chatServiceAPI.GetChatroom(id);
+
+            return View(currentChat);
+        }
+
+        [AuthorizationFilter]
+        [HttpPost]
+        public async Task<IActionResult> EditChat(ChatUpdateModel model)
+        {
+            var response = await _chatServiceAPI.EditChatroom(model);
+
+            return Redirect("~/Chat/Index/" + response.Id);
         }
 
         [AuthorizationFilter]

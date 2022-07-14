@@ -9,5 +9,13 @@ $(document).ready(function () {
         $('.modal-content-body').load(page);
     });
 
-    $('.messages-list').scrollTop($('.messages-list')[0].scrollHeight);
+    loadMessages();
 });
+
+function loadMessages() {
+    $('#messages-list-wrapper').ready(function (e) {
+        let path = window.location.pathname;
+        let chatId = path.substring(path.lastIndexOf('/') + 1);
+        $('#messages-list-wrapper').load(window.location.origin + '/Chat/GetAllMessages/' + chatId);
+    });
+}

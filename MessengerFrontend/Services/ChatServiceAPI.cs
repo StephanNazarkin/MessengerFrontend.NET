@@ -1,6 +1,7 @@
 ﻿using MessengerFrontend.Models.Chats;
 using MessengerFrontend.Models.UserAccounts;
 using MessengerFrontend.Services.Interfaces;
+using System.Net;
 using System.Text.Json;
 
 namespace MessengerFrontend.Services
@@ -27,9 +28,22 @@ namespace MessengerFrontend.Services
         public async Task<ChatViewModel> GetChatroom(int id)
         {
             var httpResponseMessage = await _httpClient.GetAsync("Chatroom/GetChatroom?chatId=" + id);
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
+            if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("Something went wrong");
+            }
+
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var chat = await JsonSerializer.DeserializeAsync<ChatViewModel>(contentStream);
+
+            if (chat is null)
+                throw new Exception("Null exception");
 
             return chat;
         }
@@ -37,6 +51,16 @@ namespace MessengerFrontend.Services
         public async Task<ChatViewModel> CreateChatroom(ChatCreateModel model)
         {
             var httpResponseMessage = await _httpClient.PostAsJsonAsync("Chatroom/CreateChatroom", model);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var response = await JsonSerializer.DeserializeAsync<ChatViewModel>(contentStream);
+
+            return response;
+        }
+
+        public async Task<ChatViewModel> EditChatroom(ChatUpdateModel model)
+        {
+            var httpResponseMessage = await _httpClient.PutAsJsonAsync("Chatroom/EditChatroom", model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var response = await JsonSerializer.DeserializeAsync<ChatViewModel>(contentStream);
