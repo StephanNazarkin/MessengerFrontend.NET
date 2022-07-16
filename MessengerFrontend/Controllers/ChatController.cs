@@ -1,10 +1,7 @@
 using MessengerFrontend.Filters;
 using MessengerFrontend.Models.Chats;
-using MessengerFrontend.Models.Messages;
-using MessengerFrontend.Services;
 using MessengerFrontend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace MessengerFrontend.Controllers
 {
@@ -23,18 +20,20 @@ namespace MessengerFrontend.Controllers
             _accountServiceAPI = accountServiceAPI;
         }
 
-        [HttpGet]
         [AuthorizationFilter]
+        [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
             var allChats = await _chatServiceAPI.GetAllChatrooms();
             var currentChat = await _chatServiceAPI.GetChatroom(id);
             var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
             var members = await _chatServiceAPI.GetAllMembers(id);
+            var messages = await _messageServiceAPI.GetMessagesFromChat(id);
 
             ViewBag.AllChats = allChats;
             ViewBag.CurrentUserAccount = currentUserAccount;
             ViewBag.Members = members;
+            ViewBag.Messages = messages.Reverse();
 
             return View(currentChat);
         }
@@ -45,7 +44,7 @@ namespace MessengerFrontend.Controllers
         {
             return View();
         }
-        
+
         [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> CreateChat(ChatCreateModel model)
@@ -54,13 +53,46 @@ namespace MessengerFrontend.Controllers
 
             return Redirect("~/Chat/Index/" + response.Id);
         }
-        
+
         [AuthorizationFilter]
-        public IActionResult EditChat()
+        [HttpGet]
+        public async Task<IActionResult> GetAllMessages(int id)
         {
-            return View();
+            var messages = await _messageServiceAPI.GetMessagesFromChat(id);
+            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
+            ViewBag.ChatId = id;
+            ViewBag.CurrentUserAccount = currentUserAccount;
+
+            return View(messages.Reverse());
         }
-        
+
+        [AuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> EditChat(int id)
+        {
+            var currentChat = await _chatServiceAPI.GetChatroom(id);
+
+            return View(currentChat);
+        }
+
+        [AuthorizationFilter]
+        [HttpPost]
+        public async Task<IActionResult> EditChat(ChatUpdateModel model)
+        {
+            var response = await _chatServiceAPI.EditChatroom(model);
+
+            return Redirect("~/Chat/Index/" + response.Id);
+        }
+
+        [AuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> DeleteChat(int id)
+        {
+            var response = await _chatServiceAPI.DeleteChatroom(id);
+
+            return Redirect("~/Home/Index");
+        }
+
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> GetMembers(int id)
@@ -72,7 +104,25 @@ namespace MessengerFrontend.Controllers
 
             return View(response);
         }
-        
+
+        [AuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> InviteFriend(int id)
+        {
+            var friends = await _accountServiceAPI.GetAllFriends();
+            ViewBag.ChatId = id;
+
+            return View(friends);
+        }
+
+        [AuthorizationFilter]
+        public async Task<IActionResult> AddToChatroom(ChatInviteModel model)
+        {
+            var result = await _chatServiceAPI.AddToChatroom(model);
+
+            return Redirect("~/Chat/Index/" + result.ChatId);
+        }
+
         [AuthorizationFilter]
         public async Task<IActionResult> SetAdmin(int userAccountId)
         {
@@ -80,7 +130,7 @@ namespace MessengerFrontend.Controllers
 
             return Redirect("~/Chat/Index/" + response.ChatId);
         }
-         
+
         [AuthorizationFilter]
         public async Task<IActionResult> UnsetAdmin(int userAccountId)
         {
@@ -88,7 +138,7 @@ namespace MessengerFrontend.Controllers
 
             return Redirect("~/Chat/Index/" + response.ChatId);
         }
-        
+
         [AuthorizationFilter]
         public async Task<IActionResult> MuteUser(int userAccountId)
         {
@@ -113,26 +163,11 @@ namespace MessengerFrontend.Controllers
         }
 
         [AuthorizationFilter]
-        public IActionResult InviteFriend()
-        {
-            return View();
-        }
-        
-        [AuthorizationFilter]
         public async Task<IActionResult> LeaveChat(int id)
         {
             var response = await _chatServiceAPI.LeaveChat(id);
 
             return Redirect("~/");
-        }
-
-        [HttpPost]
-        [AuthorizationFilter]
-        public async Task<IActionResult> SendMessage(MessageCreateModel model)
-        {
-            bool response = await _messageServiceAPI.SendMessage(model);
-
-            return Redirect("~/Chat/Index/" + model.ChatId);
         }
     }
 }

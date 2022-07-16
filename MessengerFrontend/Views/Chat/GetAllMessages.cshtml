@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+}
+<div class="messages-list">
+    @foreach (var message in Model)
+    {
+        <div class="message @(message.User.Id != ViewBag.CurrentUserAccount.User.Id?"message-them":"message-me") ">
+            @if (message.User.Id == ViewBag.CurrentUserAccount.User.Id)
+            {
+                <a href="~/Message/Index/@message.Id" data-bs-toggle="modal" data-bs-target="#modal" class="modal-link"></a>
+            }
+            <p class="from">@message.User.UserName</p>
+            @if (message.Images is not null)
+            {
+                <div class="images">
+                    @foreach (var image in message.Images)
+                    {
+                        <div class="image-item">
+                            <img src="@("https://localhost:44309/Images/" + image.Path)" alt="">
+                        </div>
+                    }
+                </div>
+            }
+            <p>@message.Text</p>
+        </div>
+    }
+</div>

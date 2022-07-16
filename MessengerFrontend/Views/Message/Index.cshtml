@@ -1,0 +1,32 @@
+﻿@{
+    Layout = null;
+}
+<div class="modal-header">
+    <h5 class="modal-title" id="message-modal">Edit Message</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form asp-controller="Message" asp-action="Edit" method="post">
+
+        @Html.Hidden("Id", (object)Model.Id)
+        @Html.Hidden("ChatId", (object)ViewBag.ChatId)
+
+        <div class="form-outline mb-4">
+            <label class="form-label">Text</label>
+            <input type="text" name="Text" class="form-control form-control-lg" value="@Model.Text"/>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <input type="submit" class="btn btn-primary" value="Save changes"/>
+        </div>
+
+    </form>
+    @Html.ActionLink("Delete Message", "Delete", "Message", 
+                                new {
+                                    id = Model.Id,
+                                    chatId = ViewBag.ChatId
+                                }, new Dictionary<string, object>{{"class", "btn btn-link text-danger" }})
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>

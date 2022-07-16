@@ -9,7 +9,7 @@ namespace MessengerFrontend.Filters
         {
             if (context.HttpContext.Session.GetString("Token") == "")
             {
-                context.Result = new RedirectResult("~Account/Login");
+                context.Result = new RedirectResult("~/Account/Login");
             }
         }
     }

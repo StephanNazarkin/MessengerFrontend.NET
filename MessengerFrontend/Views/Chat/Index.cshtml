@@ -5,6 +5,11 @@
 <div class="chat-wrapper" id="chat-page">
     <div class="chat-header border-bottom p-2 d-flex justify-content-between align-items-center shadow-lg" style="height: 65px;">
         <div class="chat-title">
+
+            @if (ViewBag.CurrentUserAccount.IsOwner)
+            {
+                <a href="~/Chat/EditChat/@Model.Id" data-bs-toggle="modal" data-bs-target="#modal" class="modal-link"></a>
+            }
             <h5 class="mb-1">@Model.Topic</h5>
             <p class="mb-0" style="font-size: 14px;">@ViewBag.Members.Count members</p>
         </div>
@@ -42,11 +47,15 @@
 
         </div>
     </div>
-    <div class="messages-wrapper">
+    <div class="messages-wrapper" >
         <div class="messages-list">
-            @foreach (var message in Model.Messages)
+            @foreach (var message in ViewBag.Messages)
             {
                 <div class="message @(message.User.Id != ViewBag.CurrentUserAccount.User.Id?"message-them":"message-me") ">
+                    @if (message.User.Id == ViewBag.CurrentUserAccount.User.Id)
+                    {
+                        <a href="~/Message/Index/@message.Id?chatId=@Model.Id" data-bs-toggle="modal" data-bs-target="#modal" class="modal-link"></a>
+                    }
                     <p class="from">@message.User.UserName</p>
                     @if (message.Images is not null)
                     {
@@ -64,7 +73,7 @@
             }
         </div>
     </div>
-    <form asp-controller="Chat" asp-action="SendMessage" method="post" enctype="multipart/form-data">
+    <form asp-controller="Message" asp-action="SendMessage" method="post" enctype="multipart/form-data">
         @Html.Hidden("ChatId", (object)Model.Id)
         <div class="input-group input-group-lg border">
             <label class="attachment btn .bg-transparent" style="box-shadow: none; border: none;">
