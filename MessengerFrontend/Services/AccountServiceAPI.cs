@@ -1,4 +1,5 @@
 ﻿using MessengerFrontend.Models.Users;
+using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -16,7 +17,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> Register(UserViewModel model) 
         {
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/Register", model);
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.Register, model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -27,7 +28,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> Login(UserLoginModel model)
         {
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/Login", model);
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.Login, model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -37,7 +38,7 @@ namespace MessengerFrontend.Services
 
         public async Task<IEnumerable<UserViewModel>> GetAllFriends()
         {
-            var httpResponseMessage = await _httpClient.GetAsync("Account/GetAllFriends");
+            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllFriends);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var friends = await JsonSerializer.DeserializeAsync
@@ -49,7 +50,7 @@ namespace MessengerFrontend.Services
 
         public async Task<IEnumerable<UserViewModel>> GetAllBlockedUsers()
         {
-            var httpResponseMessage = await _httpClient.GetAsync("Account/GetAllBlockedUsers");
+            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllBlockedUsers);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var blockedUsers = await JsonSerializer.DeserializeAsync
@@ -60,7 +61,7 @@ namespace MessengerFrontend.Services
         
         public async Task<UserViewModel> GetCurrentUser()
         {
-            var httpResponseMessage = await _httpClient.GetAsync("Account/GetCurrentUser");
+            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetCurrentUser);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
@@ -70,7 +71,7 @@ namespace MessengerFrontend.Services
         public async Task<UserViewModel> GetUserByUserName(string userName)
         {
             var httpResponseMessage = await _httpClient.
-                GetAsync(string.Format("/Account/GetUserByUserName?userName={0}", userName));
+                GetAsync(string.Format(RoutesAPI.GetUserByUserName, userName));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
@@ -79,7 +80,7 @@ namespace MessengerFrontend.Services
 
         public async Task<IEnumerable<UserViewModel>> GetAllUsers()
         {
-            var httpResponseMessage = await _httpClient.GetAsync("Account/GetAllUsers");
+            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllUsers);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var allUsers = await JsonSerializer.DeserializeAsync
@@ -90,7 +91,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> AddFriend(string userId)
         {
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/AddFriend", userId);
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.AddFriend, userId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -100,7 +101,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> DeleteFriend(string userId)
         {
-            var httpResponseMessage = await _httpClient.DeleteAsync(string.Format("Account/DeleteFriend?friendId={0}", userId));
+            var httpResponseMessage = await _httpClient.DeleteAsync(string.Format(RoutesAPI.DeleteFriend, userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -110,7 +111,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> BlockUser(string userId)
         {
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/BlockUser", userId);
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.BlockUser, userId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -120,7 +121,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> UnblockUser(string userId)
         {
-            var httpResponseMessage = await _httpClient.DeleteAsync(string.Format("Account/UnblockUser?blockedUserId={0}", userId));
+            var httpResponseMessage = await _httpClient.DeleteAsync(string.Format(RoutesAPI.UnblockUser, userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -130,7 +131,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> UpdateUser(UserUpdateModel userModel)
         {
-            var httpResponseMessage = await _httpClient.PutAsJsonAsync("Account/UpdateUser", userModel);
+            var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.UpdateUser, userModel);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);

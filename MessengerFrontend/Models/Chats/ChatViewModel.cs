@@ -8,10 +8,13 @@ namespace MessengerFrontend.Models.Chats
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
+
         [JsonPropertyName("topic")]
         public string? Topic { get; set; }
+
         [JsonPropertyName("users")]
         public IEnumerable<UserAccountViewModel>? Users { get; set; }
+
         [JsonPropertyName("messages")]
         public IEnumerable<MessageViewModel>? Messages { get; set; }
     }

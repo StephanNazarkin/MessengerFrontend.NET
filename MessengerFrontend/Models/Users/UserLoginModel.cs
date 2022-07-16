@@ -6,6 +6,7 @@ namespace MessengerFrontend.Models.Users
     {
         [JsonPropertyName("userName")]
         public string? UserName { get; set; }
+
         [JsonPropertyName("password")]
         public string? Password { get; set; }
     }

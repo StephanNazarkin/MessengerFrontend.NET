@@ -6,6 +6,7 @@ namespace MessengerFrontend.Models.MessageImages
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
+
         [JsonPropertyName("path")]
         public string? Path { get; set; }
     }

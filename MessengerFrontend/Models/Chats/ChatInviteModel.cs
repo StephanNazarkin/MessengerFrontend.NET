@@ -8,6 +8,7 @@ namespace MessengerFrontend.Models.Chats
     {
         [JsonPropertyName("chatId")]
         public int ChatId { get; set; }
+
         [JsonPropertyName("userId")]
         public string? UserId { get; set; }
     }

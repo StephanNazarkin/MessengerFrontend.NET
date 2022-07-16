@@ -1,5 +1,6 @@
 using MessengerFrontend.Filters;
 using MessengerFrontend.Models.Chats;
+using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,7 +52,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.CreateChatroom(model);
 
-            return Redirect("~/Chat/Index/" + response.Id);
+            return Redirect(string.Format(RoutesApp.Chat, response.Id));
         }
 
         [AuthorizationFilter]
@@ -81,7 +82,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.EditChatroom(model);
 
-            return Redirect("~/Chat/Index/" + response.Id);
+            return Redirect(string.Format(RoutesApp.Chat, response.Id));
         }
 
         [AuthorizationFilter]
@@ -90,7 +91,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.DeleteChatroom(id);
 
-            return Redirect("~/Home/Index");
+            return Redirect(RoutesApp.Home);
         }
 
         [AuthorizationFilter]
@@ -118,9 +119,9 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> AddToChatroom(ChatInviteModel model)
         {
-            var result = await _chatServiceAPI.AddToChatroom(model);
+            var response = await _chatServiceAPI.AddToChatroom(model);
 
-            return Redirect("~/Chat/Index/" + result.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         [AuthorizationFilter]
@@ -128,7 +129,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.SetAdmin(userAccountId);
 
-            return Redirect("~/Chat/Index/" + response.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         [AuthorizationFilter]
@@ -136,7 +137,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.UnsetAdmin(userAccountId);
 
-            return Redirect("~/Chat/Index/" + response.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         [AuthorizationFilter]
@@ -144,7 +145,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.MuteUser(userAccountId);
 
-            return Redirect("~/Chat/Index/" + response.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         [AuthorizationFilter]
@@ -152,14 +153,14 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.UnmuteUser(userAccountId);
 
-            return Redirect("~/Chat/Index/" + response.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         public async Task<IActionResult> KickUser(int userAccountId)
         {
             var response = await _chatServiceAPI.KickUser(userAccountId);
 
-            return Redirect("~/");
+            return Redirect(RoutesApp.Home);
         }
 
         [AuthorizationFilter]
@@ -167,7 +168,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.LeaveChat(id);
 
-            return Redirect("~/");
+            return Redirect(RoutesApp.Home);
         }
     }
 }
