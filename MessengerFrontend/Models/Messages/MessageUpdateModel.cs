@@ -8,8 +8,10 @@ namespace MessengerFrontend.Models.Messages
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
+
         [JsonPropertyName("text")]
         public string? Text { get; set; }
+
         [JsonPropertyName("chatId")]
         public int ChatId { get; set; }
     }

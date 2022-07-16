@@ -1,5 +1,6 @@
 ﻿using MessengerFrontend.Filters;
 using MessengerFrontend.Models.Messages;
+using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,7 @@ namespace MessengerFrontend.Controllers
         {
             bool response = await _messageServiceAPI.SendMessage(model);
 
-            return Redirect("~/Chat/Index/" + model.ChatId);
+            return Redirect(RoutesApp.Chat + model.ChatId);
         }
 
         [AuthorizationFilter]
@@ -39,7 +40,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _messageServiceAPI.EditMessage(model);
 
-            return Redirect("~/Chat/Index/" + model.ChatId);
+            return Redirect(RoutesApp.Chat + model.ChatId);
         }
 
         [AuthorizationFilter]
@@ -48,7 +49,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _messageServiceAPI.DeleteMessage(id);
 
-            return Redirect("~/Chat/Index/" + chatId);
+            return Redirect(RoutesApp.Chat + chatId);
         }
     }
 }

@@ -7,8 +7,10 @@ namespace MessengerFrontend.Models.Messages
     {
         [JsonPropertyName("chatId")]
         public int ChatId { get; set; }
+
         [JsonPropertyName("files")]
         public IFormFileCollection? Files { get; set; }
+
         [JsonPropertyName("text")]
         public string? Text { get; set; }
     }

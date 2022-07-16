@@ -1,5 +1,6 @@
 ﻿using MessengerFrontend.Filters;
 using MessengerFrontend.Models.Users;
+using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +26,7 @@ namespace MessengerFrontend.Controllers
             UserViewModel loggedUser = await _accountServiceAPI.Login(model);
             HttpContext.Session.SetString("Token", loggedUser.Token);
 
-            return Redirect("~/");
+            return Redirect(RoutesApp.Home);
         }
 
         public IActionResult Register()
@@ -38,7 +39,7 @@ namespace MessengerFrontend.Controllers
         {
             await _accountServiceAPI.Register(model);
 
-            return Redirect("~/Account/ConfirmEmail/");
+            return Redirect(RoutesApp.ConfirmEmail);
         }
 
         public IActionResult ConfirmEmail()
@@ -100,7 +101,7 @@ namespace MessengerFrontend.Controllers
         {
             var user = await _accountServiceAPI.AddFriend(userId);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
         [HttpGet]
@@ -108,7 +109,7 @@ namespace MessengerFrontend.Controllers
         {
             var user = await _accountServiceAPI.DeleteFriend(userId);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
         [HttpGet]
@@ -116,7 +117,7 @@ namespace MessengerFrontend.Controllers
         {
             var user = await _accountServiceAPI.BlockUser(userId);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
         [HttpGet]
@@ -124,14 +125,14 @@ namespace MessengerFrontend.Controllers
         {
             var user = await _accountServiceAPI.UnblockUser(userId);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
         public async Task<IActionResult> UpdateUser(UserUpdateModel userModel)
         {
             var user = await _accountServiceAPI.UpdateUser(userModel);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
     }

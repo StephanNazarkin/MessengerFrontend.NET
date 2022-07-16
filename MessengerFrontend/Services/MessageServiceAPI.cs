@@ -1,4 +1,5 @@
 ﻿using MessengerFrontend.Models.Messages;
+using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -16,7 +17,7 @@ namespace MessengerFrontend.Services
 
         public async Task<MessageViewModel> GetMessage(int messageId)
         {
-            var httpResponseMessage = await _httpClient.GetAsync("Message/GetMessage?messageId=" + messageId);
+            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetMessage + messageId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
@@ -26,7 +27,7 @@ namespace MessengerFrontend.Services
 
         public async Task<IEnumerable<MessageViewModel>> GetMessagesFromChat(int chatId)
         {
-            var httpResponseMessage = await _httpClient.GetAsync("Message/GetMessagesFromChat?chatId=" + chatId);
+            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetMessagesFromChat + chatId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var messages = await JsonSerializer.DeserializeAsync<IEnumerable<MessageViewModel>>(contentStream);
@@ -55,7 +56,7 @@ namespace MessengerFrontend.Services
                 }
             }
             
-            var httpResponseMessage = await _httpClient.PostAsync("Message/SendMessage", content);
+            var httpResponseMessage = await _httpClient.PostAsync(RoutesAPI.SendMessage, content);
 
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -69,7 +70,7 @@ namespace MessengerFrontend.Services
 
         public async Task<MessageViewModel> EditMessage(MessageUpdateModel model)
         {
-            var httpResponseMessage = await _httpClient.PutAsJsonAsync("Message/EditMessage", model);
+            var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.EditMessage, model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
@@ -79,7 +80,7 @@ namespace MessengerFrontend.Services
 
         public async Task<bool> DeleteMessage(int id)
         {
-            var httpResponseMessage = await _httpClient.PutAsJsonAsync("Message/SoftDeleteMessage", id);
+            var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.SoftDeleteMessage, id);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var result = await JsonSerializer.DeserializeAsync<bool>(contentStream);
