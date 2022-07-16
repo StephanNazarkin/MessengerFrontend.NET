@@ -28,7 +28,7 @@ namespace MessengerFrontend.Services
 
         public async Task<ChatViewModel> GetChatroom(int id)
         {
-            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetChatroom + id);
+            var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetChatroom, id));
 
             if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
             {
@@ -81,7 +81,7 @@ namespace MessengerFrontend.Services
 
         public async Task<IEnumerable<UserAccountViewModel>> GetAllMembers(int id)
         {
-            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllUsersFromChat + id);
+            var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetAllUsersFromChat, id));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var response = await JsonSerializer.DeserializeAsync<IEnumerable<UserAccountViewModel>>(contentStream);
@@ -101,7 +101,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserAccountViewModel> GetCurrentUserAccount(int chatId)
         {
-            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetCurrentUserAccount + chatId);
+            var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetCurrentUserAccount, chatId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var response = await JsonSerializer.DeserializeAsync<UserAccountViewModel>(contentStream);

@@ -17,7 +17,7 @@ namespace MessengerFrontend.Services
 
         public async Task<MessageViewModel> GetMessage(int messageId)
         {
-            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetMessage + messageId);
+            var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetMessage, messageId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
@@ -27,7 +27,7 @@ namespace MessengerFrontend.Services
 
         public async Task<IEnumerable<MessageViewModel>> GetMessagesFromChat(int chatId)
         {
-            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetMessagesFromChat + chatId);
+            var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetMessagesFromChat, chatId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var messages = await JsonSerializer.DeserializeAsync<IEnumerable<MessageViewModel>>(contentStream);

@@ -31,7 +31,7 @@ namespace MessengerFrontend.Controllers
         {
             bool response = await _messageServiceAPI.SendMessage(model);
 
-            return Redirect(RoutesApp.Chat + model.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, model.ChatId));
         }
 
         [AuthorizationFilter]
@@ -40,7 +40,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _messageServiceAPI.EditMessage(model);
 
-            return Redirect(RoutesApp.Chat + model.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, model.ChatId));
         }
 
         [AuthorizationFilter]
@@ -49,7 +49,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _messageServiceAPI.DeleteMessage(id);
 
-            return Redirect(RoutesApp.Chat + chatId);
+            return Redirect(string.Format(RoutesApp.Chat, chatId));
         }
     }
 }

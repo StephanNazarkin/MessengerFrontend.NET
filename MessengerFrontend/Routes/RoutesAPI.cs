@@ -17,15 +17,15 @@
 
         public const string AddFriend = "Account/AddFriend";
 
-        public const string DeleteFriend = "Account/DeleteFriend?friendId=";
+        public const string DeleteFriend = "Account/DeleteFriend?friendId={0}";
 
         public const string BlockUser = "Account/BlockUser";
 
-        public const string UnblockUser = "Account/UnblockUser?blockedUserId=";
+        public const string UnblockUser = "Account/UnblockUser?blockedUserId={0}";
 
         public const string UpdateUser = "Account/UpdateUser";
 
-        public const string GetUserByUserName = "/Account/GetUserByUserName?userName=";
+        public const string GetUserByUserName = "/Account/GetUserByUserName?userName={0}";
         #endregion
 
         #region Chatroom
@@ -51,11 +51,11 @@
 
         public const string LeaveFromChatroom = "Chatroom/LeaveFromChatroom";
 
-        public const string GetCurrentUserAccount = "Chatroom/GetCurrentUserAccount?chatId=";
+        public const string GetCurrentUserAccount = "Chatroom/GetCurrentUserAccount?chatId={0}";
 
-        public const string GetAllUsersFromChat = "Chatroom/GetAllUsers?chatId=";
+        public const string GetAllUsersFromChat = "Chatroom/GetAllUsers?chatId={0}";
 
-        public const string GetChatroom = "Chatroom/GetChatroom?chatId=";
+        public const string GetChatroom = "Chatroom/GetChatroom?chatId={0}";
         #endregion
 
         #region Message
@@ -65,9 +65,9 @@
 
         public const string SoftDeleteMessage = "Message/SoftDeleteMessage";
 
-        public const string GetMessage = "Message/GetMessage?messageId=";
+        public const string GetMessage = "Message/GetMessage?messageId={0}";
 
-        public const string GetMessagesFromChat = "Message/GetMessagesFromChat?chatId=";
+        public const string GetMessagesFromChat = "Message/GetMessagesFromChat?chatId={0}";
         #endregion
     }
 }

@@ -71,7 +71,7 @@ namespace MessengerFrontend.Services
         public async Task<UserViewModel> GetUserByUserName(string userName)
         {
             var httpResponseMessage = await _httpClient.
-                GetAsync(RoutesAPI.GetUserByUserName + userName);
+                GetAsync(string.Format(RoutesAPI.GetUserByUserName, userName));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
@@ -101,7 +101,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> DeleteFriend(string userId)
         {
-            var httpResponseMessage = await _httpClient.DeleteAsync(RoutesAPI.DeleteFriend + userId);
+            var httpResponseMessage = await _httpClient.DeleteAsync(string.Format(RoutesAPI.DeleteFriend, userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -121,7 +121,7 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> UnblockUser(string userId)
         {
-            var httpResponseMessage = await _httpClient.DeleteAsync(RoutesAPI.UnblockUser + userId);
+            var httpResponseMessage = await _httpClient.DeleteAsync(string.Format(RoutesAPI.UnblockUser, userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);

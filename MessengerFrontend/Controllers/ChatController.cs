@@ -52,7 +52,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.CreateChatroom(model);
 
-            return Redirect(RoutesApp.Chat + response.Id);
+            return Redirect(string.Format(RoutesApp.Chat, response.Id));
         }
 
         [AuthorizationFilter]
@@ -82,7 +82,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.EditChatroom(model);
 
-            return Redirect(RoutesApp.Chat + response.Id);
+            return Redirect(string.Format(RoutesApp.Chat, response.Id));
         }
 
         [AuthorizationFilter]
@@ -121,7 +121,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.AddToChatroom(model);
 
-            return Redirect(RoutesApp.Chat + response.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         [AuthorizationFilter]
@@ -129,7 +129,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.SetAdmin(userAccountId);
 
-            return Redirect(RoutesApp.Chat + response.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         [AuthorizationFilter]
@@ -137,7 +137,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.UnsetAdmin(userAccountId);
 
-            return Redirect(RoutesApp.Chat + response.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         [AuthorizationFilter]
@@ -145,7 +145,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.MuteUser(userAccountId);
 
-            return Redirect(RoutesApp.Chat + response.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         [AuthorizationFilter]
@@ -153,7 +153,7 @@ namespace MessengerFrontend.Controllers
         {
             var response = await _chatServiceAPI.UnmuteUser(userAccountId);
 
-            return Redirect(RoutesApp.Chat + response.ChatId);
+            return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         public async Task<IActionResult> KickUser(int userAccountId)

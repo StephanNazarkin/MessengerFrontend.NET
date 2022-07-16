@@ -4,7 +4,7 @@
     {
         public const string Home = "/";
 
-        public const string Chat = "/Chat/Index/";
+        public const string Chat = "/Chat/Index/{0}";
 
         public const string AccountSettings = "~/Account/Settings";
 
