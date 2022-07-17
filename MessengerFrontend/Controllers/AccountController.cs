@@ -9,6 +9,7 @@ namespace MessengerFrontend.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountServiceAPI _accountServiceAPI;
+        private string Token => HttpContext.Session.GetString("Token");
 
         public AccountController(IAccountServiceAPI accountServiceAPI)
         {
@@ -60,9 +61,9 @@ namespace MessengerFrontend.Controllers
 
         public async Task<IActionResult> SearchModal()
         {
-            var currentUser = await _accountServiceAPI.GetCurrentUser();
+            var currentUser = await _accountServiceAPI.GetCurrentUser(Token);
             ViewBag.CurrentUser = currentUser;
-            var allUsers = await _accountServiceAPI.GetAllUsers();
+            var allUsers = await _accountServiceAPI.GetAllUsers(Token);
             ViewBag.AllUsers = allUsers;
             return View();
         }
@@ -70,7 +71,7 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> FriendListModal()
         {
-            var allFriends = await _accountServiceAPI.GetAllFriends();
+            var allFriends = await _accountServiceAPI.GetAllFriends(Token);
             ViewBag.AllFriends = allFriends;
             return View();
         }
@@ -78,7 +79,7 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> BlackListModal()
         {
-            var allBlockedUsers = await _accountServiceAPI.GetAllBlockedUsers();
+            var allBlockedUsers = await _accountServiceAPI.GetAllBlockedUsers(Token);
             ViewBag.AllBlockedUsers = allBlockedUsers;
             return View();
         }
@@ -92,14 +93,14 @@ namespace MessengerFrontend.Controllers
         [NonAction]
         public async void GetUserByUserName(string userName)
         {
-            var user = await _accountServiceAPI.GetUserByUserName(userName);
+            var user = await _accountServiceAPI.GetUserByUserName(userName, Token);
             ViewBag.FoundUser = user;
         }
 
         [HttpGet]
         public async Task<IActionResult> AddFriend(string userId)
         {
-            var user = await _accountServiceAPI.AddFriend(userId);
+            var user = await _accountServiceAPI.AddFriend(userId, Token);
 
             return Redirect(RoutesApp.AccountSettings);
         }
@@ -107,7 +108,7 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteFriend(string userId)
         {
-            var user = await _accountServiceAPI.DeleteFriend(userId);
+            var user = await _accountServiceAPI.DeleteFriend(userId, Token);
 
             return Redirect(RoutesApp.AccountSettings);
         }
@@ -115,7 +116,7 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> BlockUser(string userId)
         {
-            var user = await _accountServiceAPI.BlockUser(userId);
+            var user = await _accountServiceAPI.BlockUser(userId, Token);
 
             return Redirect(RoutesApp.AccountSettings);
         }
@@ -123,14 +124,14 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> UnblockUser(string userId)
         {
-            var user = await _accountServiceAPI.UnblockUser(userId);
+            var user = await _accountServiceAPI.UnblockUser(userId, Token);
 
             return Redirect(RoutesApp.AccountSettings);
         }
 
         public async Task<IActionResult> UpdateUser(UserUpdateModel userModel)
         {
-            var user = await _accountServiceAPI.UpdateUser(userModel);
+            var user = await _accountServiceAPI.UpdateUser(userModel, Token);
 
             return Redirect(RoutesApp.AccountSettings);
         }

@@ -10,6 +10,7 @@ namespace MessengerFrontend.Controllers
     public class HomeController : Controller
     {
         private readonly IChatServiceAPI _chatServiceAPI;
+        private string Token => HttpContext.Session.GetString("Token");
 
         public HomeController(IChatServiceAPI chatServiceAPI)
         {
@@ -19,7 +20,7 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> Index()
         {
-            var result = await _chatServiceAPI.GetAllChatrooms();
+            var result = await _chatServiceAPI.GetAllChatrooms(Token);
             ViewBag.AllChats = result;
             return View();
         }
