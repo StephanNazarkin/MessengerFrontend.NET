@@ -54,8 +54,25 @@ namespace MessengerFrontend.Services
 
         public async Task<ChatViewModel> CreateChatroom(ChatCreateModel model, string token)
         {
+            if (string.IsNullOrEmpty(model.Topic))
+                throw new ArgumentNullException("Topic cannot be null");
+
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(model.Topic), "Topic");
+
+            if (model.File is not null)
+            {
+                var file = model.File;
+                var fileStream = new StreamContent(file.OpenReadStream());
+                fileStream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                content.Add(fileStream, "File", file.FileName);
+            }
+            
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.CreateChatroom, model);
+            
+            var httpResponseMessage = await _httpClient.PostAsync(RoutesAPI.CreateChatroom, content);
+
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var response = await JsonSerializer.DeserializeAsync<ChatViewModel>(contentStream);
@@ -65,8 +82,27 @@ namespace MessengerFrontend.Services
 
         public async Task<ChatViewModel> EditChatroom(ChatUpdateModel model, string token)
         {
+            if (string.IsNullOrEmpty(model.Topic))
+                throw new ArgumentNullException("Topic cannot be null");
+
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(model.Topic), "Topic");
+
+            content.Add(new StringContent(model.Id.ToString()), "Id");
+
+            if (model.File is not null)
+            {
+                var file = model.File;
+                var fileStream = new StreamContent(file.OpenReadStream());
+                fileStream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                content.Add(fileStream, "File", file.FileName);
+            }
+
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.EditChatroom, model);
+            
+            var httpResponseMessage = await _httpClient.PutAsync(RoutesAPI.EditChatroom, content);
+            
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var response = await JsonSerializer.DeserializeAsync<ChatViewModel>(contentStream);

@@ -1,4 +1,5 @@
-﻿using MessengerFrontend.Models.Messages;
+﻿using MessengerFrontend.Models.ChatImages;
+using MessengerFrontend.Models.Messages;
 using MessengerFrontend.Models.UserAccounts;
 using System.Text.Json.Serialization;
 
@@ -11,6 +12,9 @@ namespace MessengerFrontend.Models.Chats
 
         [JsonPropertyName("topic")]
         public string? Topic { get; set; }
+
+        [JsonPropertyName("image")]
+        public ChatImageViewModel? Image { get; set; }
 
         [JsonPropertyName("users")]
         public IEnumerable<UserAccountViewModel>? Users { get; set; }

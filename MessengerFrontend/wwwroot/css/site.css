@@ -27,7 +27,7 @@ html {
     overflow: hidden;
     height: 100%;
     flex-shrink: 0;
-    width: 350px;
+    width: 400px;
 }
 
 .sidebar .chatlist-wrapper {

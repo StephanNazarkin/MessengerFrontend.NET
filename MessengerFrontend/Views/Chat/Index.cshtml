@@ -2,16 +2,21 @@
     ViewData["Title"] = "Chat Title";
     Layout = "_LayoutChats";
 }
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 <div class="chat-wrapper" id="chat-page">
     <div class="chat-header border-bottom p-2 d-flex justify-content-between align-items-center shadow-lg" style="height: 65px;">
-        <div class="chat-title">
+        <div class="chat-title d-flex align-items-center">
 
             @if (ViewBag.CurrentUserAccount.IsOwner)
             {
                 <a href="~/Chat/EditChat/@Model.Id" data-bs-toggle="modal" data-bs-target="#modal" class="modal-link"></a>
             }
-            <h5 class="mb-1">@Model.Topic</h5>
-            <p class="mb-0" style="font-size: 14px;">@ViewBag.Members.Count members</p>
+            <img src="@(Configuration["Api"] + Model.Image.Path)" alt="image" class = "img-thumbnail rounded-circle flex-shrink-0 me-1" style="width: 49px; height: 49px; object-fit: cover;">
+            <div class="chat-info">
+                <h5 class="mb-1">@Model.Topic</h5>
+                <p class="m-0" style="font-size: 14px;">@ViewBag.Members.Count members</p>
+            </div>
         </div>
 
         <div class="chat-actions d-flex">
@@ -48,7 +53,7 @@
         </div>
     </div>
     <div class="messages-wrapper" >
-        <div class="messages-list">
+        <div class="messages-list px-3">
             @foreach (var message in ViewBag.Messages)
             {
                 <div class="message @(message.User.Id != ViewBag.CurrentUserAccount.User.Id?"message-them":"message-me") ">
@@ -63,7 +68,7 @@
                             @foreach (var image in message.Images)
                             {
                                 <div class="image-item">
-                                    <img src="@("https://localhost:44309/Images/" + image.Path)" alt="">
+                                    <img src="@(Configuration["Api"] + image.Path)" alt="image">
                                 </div>
                             }
                         </div>
@@ -77,7 +82,7 @@
         @Html.Hidden("ChatId", (object)Model.Id)
         <div class="input-group input-group-lg border">
             <label class="attachment btn .bg-transparent" style="box-shadow: none; border: none;">
-                <input type="file" name="files" style="display: none;" multiple>
+                <input type="file" name="files" accept="image/*" style="display: none;" multiple>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
                     <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
                 </svg>

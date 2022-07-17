@@ -40,13 +40,18 @@ namespace MessengerFrontend.Services
         public async Task<bool> SendMessage(MessageCreateModel model, string token)
         {
             if (model.Text is null && model.Files is null)
+            {
                 return false;
+            } 
+
             using var content = new MultipartFormDataContent();
 
             content.Add(new StringContent(model.ChatId.ToString()), "ChatId");
 
             if (model.Text is not null)
+            {
                 content.Add(new StringContent(model.Text), "Text");
+            }
 
             if (model.Files is not null)
             {
@@ -66,7 +71,9 @@ namespace MessengerFrontend.Services
             var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
 
             if (message is null)
+            {
                 return false;
+            }
 
             return true;
         }

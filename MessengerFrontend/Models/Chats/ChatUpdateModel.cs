@@ -11,5 +11,8 @@ namespace MessengerFrontend.Models.Chats
 
         [JsonPropertyName("topic")]
         public string? Topic { get; set; }
+
+        [JsonPropertyName("file")]
+        public IFormFile? File { get; set; }
     }
 }

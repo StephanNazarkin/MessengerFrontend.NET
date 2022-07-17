@@ -1,6 +1,4 @@
-﻿using MessengerFrontend.Models.Messages;
-using MessengerFrontend.Models.UserAccounts;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace MessengerFrontend.Models.Chats
 {
@@ -8,5 +6,8 @@ namespace MessengerFrontend.Models.Chats
     {
         [JsonPropertyName("topic")]
         public string? Topic { get; set; }
+
+        [JsonPropertyName("file")]
+        public IFormFile? File { get; set; }
     }
 }
