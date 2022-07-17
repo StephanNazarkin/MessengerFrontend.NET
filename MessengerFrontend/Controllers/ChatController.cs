@@ -12,6 +12,8 @@ namespace MessengerFrontend.Controllers
         private readonly IMessageServiceAPI _messageServiceAPI;
         private readonly IAccountServiceAPI _accountServiceAPI;
 
+        private string Token => HttpContext.Session.GetString("Token");
+
         public ChatController(IChatServiceAPI chatServiceAPI,
             IMessageServiceAPI messageServiceAPI,
             IAccountServiceAPI accountServiceAPI)
@@ -25,11 +27,11 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
-            var allChats = await _chatServiceAPI.GetAllChatrooms();
-            var currentChat = await _chatServiceAPI.GetChatroom(id);
-            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
-            var members = await _chatServiceAPI.GetAllMembers(id);
-            var messages = await _messageServiceAPI.GetMessagesFromChat(id);
+            var allChats = await _chatServiceAPI.GetAllChatrooms(Token);
+            var currentChat = await _chatServiceAPI.GetChatroom(id, Token);
+            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id, Token);
+            var members = await _chatServiceAPI.GetAllMembers(id, Token);
+            var messages = await _messageServiceAPI.GetMessagesFromChat(id, Token);
 
             ViewBag.AllChats = allChats;
             ViewBag.CurrentUserAccount = currentUserAccount;
@@ -50,7 +52,7 @@ namespace MessengerFrontend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateChat(ChatCreateModel model)
         {
-            var response = await _chatServiceAPI.CreateChatroom(model);
+            var response = await _chatServiceAPI.CreateChatroom(model, Token);
 
             return Redirect(string.Format(RoutesApp.Chat, response.Id));
         }
@@ -59,8 +61,8 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMessages(int id)
         {
-            var messages = await _messageServiceAPI.GetMessagesFromChat(id);
-            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
+            var messages = await _messageServiceAPI.GetMessagesFromChat(id, Token);
+            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id, Token);
             ViewBag.ChatId = id;
             ViewBag.CurrentUserAccount = currentUserAccount;
 
@@ -71,7 +73,7 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> EditChat(int id)
         {
-            var currentChat = await _chatServiceAPI.GetChatroom(id);
+            var currentChat = await _chatServiceAPI.GetChatroom(id, Token);
 
             return View(currentChat);
         }
@@ -80,7 +82,7 @@ namespace MessengerFrontend.Controllers
         [HttpPost]
         public async Task<IActionResult> EditChat(ChatUpdateModel model)
         {
-            var response = await _chatServiceAPI.EditChatroom(model);
+            var response = await _chatServiceAPI.EditChatroom(model, Token);
 
             return Redirect(string.Format(RoutesApp.Chat, response.Id));
         }
@@ -89,7 +91,7 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteChat(int id)
         {
-            var response = await _chatServiceAPI.DeleteChatroom(id);
+            var response = await _chatServiceAPI.DeleteChatroom(id, Token);
 
             return Redirect(RoutesApp.Home);
         }
@@ -98,8 +100,8 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMembers(int id)
         {
-            var response = await _chatServiceAPI.GetAllMembers(id);
-            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
+            var response = await _chatServiceAPI.GetAllMembers(id, Token);
+            var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id, Token);
 
             ViewBag.currentUserAccount = currentUserAccount;
 
@@ -110,7 +112,7 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> InviteFriend(int id)
         {
-            var friends = await _accountServiceAPI.GetAllFriends();
+            var friends = await _accountServiceAPI.GetAllFriends(Token);
             ViewBag.ChatId = id;
 
             return View(friends);
@@ -119,7 +121,7 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> AddToChatroom(ChatInviteModel model)
         {
-            var response = await _chatServiceAPI.AddToChatroom(model);
+            var response = await _chatServiceAPI.AddToChatroom(model, Token);
 
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
@@ -127,7 +129,7 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> SetAdmin(int userAccountId)
         {
-            var response = await _chatServiceAPI.SetAdmin(userAccountId);
+            var response = await _chatServiceAPI.SetAdmin(userAccountId, Token);
 
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
@@ -135,7 +137,7 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> UnsetAdmin(int userAccountId)
         {
-            var response = await _chatServiceAPI.UnsetAdmin(userAccountId);
+            var response = await _chatServiceAPI.UnsetAdmin(userAccountId, Token);
 
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
@@ -143,7 +145,7 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> MuteUser(int userAccountId)
         {
-            var response = await _chatServiceAPI.MuteUser(userAccountId);
+            var response = await _chatServiceAPI.MuteUser(userAccountId, Token);
 
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
@@ -151,14 +153,14 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> UnmuteUser(int userAccountId)
         {
-            var response = await _chatServiceAPI.UnmuteUser(userAccountId);
+            var response = await _chatServiceAPI.UnmuteUser(userAccountId, Token);
 
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
         public async Task<IActionResult> KickUser(int userAccountId)
         {
-            var response = await _chatServiceAPI.KickUser(userAccountId);
+            var response = await _chatServiceAPI.KickUser(userAccountId, Token);
 
             return Redirect(RoutesApp.Home);
         }
@@ -166,7 +168,7 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> LeaveChat(int id)
         {
-            var response = await _chatServiceAPI.LeaveChat(id);
+            var response = await _chatServiceAPI.LeaveChat(id, Token);
 
             return Redirect(RoutesApp.Home);
         }

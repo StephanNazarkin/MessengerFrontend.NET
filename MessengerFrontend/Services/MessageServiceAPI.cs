@@ -15,8 +15,9 @@ namespace MessengerFrontend.Services
             _httpClient = httpClientFactory.CreateClient("Messenger");
         }
 
-        public async Task<MessageViewModel> GetMessage(int messageId)
+        public async Task<MessageViewModel> GetMessage(int messageId, string token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetMessage, messageId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -25,8 +26,9 @@ namespace MessengerFrontend.Services
             return message;
         }
 
-        public async Task<IEnumerable<MessageViewModel>> GetMessagesFromChat(int chatId)
+        public async Task<IEnumerable<MessageViewModel>> GetMessagesFromChat(int chatId, string token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetMessagesFromChat, chatId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -35,7 +37,7 @@ namespace MessengerFrontend.Services
             return messages;
         }
 
-        public async Task<bool> SendMessage(MessageCreateModel model)
+        public async Task<bool> SendMessage(MessageCreateModel model, string token)
         {
             if (model.Text is null && model.Files is null)
                 return false;
@@ -55,7 +57,8 @@ namespace MessengerFrontend.Services
                     content.Add(fileStream, "files", file.FileName);
                 }
             }
-            
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PostAsync(RoutesAPI.SendMessage, content);
 
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -68,8 +71,9 @@ namespace MessengerFrontend.Services
             return true;
         }
 
-        public async Task<MessageViewModel> EditMessage(MessageUpdateModel model)
+        public async Task<MessageViewModel> EditMessage(MessageUpdateModel model, string token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.EditMessage, model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -78,8 +82,9 @@ namespace MessengerFrontend.Services
             return message;
         }
 
-        public async Task<bool> DeleteMessage(int id)
+        public async Task<bool> DeleteMessage(int id, string token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.SoftDeleteMessage, id);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
