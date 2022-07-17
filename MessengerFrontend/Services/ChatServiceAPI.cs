@@ -3,6 +3,7 @@ using MessengerFrontend.Models.UserAccounts;
 using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace MessengerFrontend.Services
@@ -51,7 +52,22 @@ namespace MessengerFrontend.Services
 
         public async Task<ChatViewModel> CreateChatroom(ChatCreateModel model)
         {
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.CreateChatroom, model);
+            if (string.IsNullOrEmpty(model.Topic))
+                throw new ArgumentNullException("Topic cannot be null");
+
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(model.Topic), "Topic");
+
+            if (model.File is not null)
+            {
+                var file = model.File;
+                var fileStream = new StreamContent(file.OpenReadStream());
+                fileStream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                content.Add(fileStream, "File", file.FileName);
+            }
+
+            var httpResponseMessage = await _httpClient.PostAsync(RoutesAPI.CreateChatroom, content);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var response = await JsonSerializer.DeserializeAsync<ChatViewModel>(contentStream);
@@ -61,7 +77,25 @@ namespace MessengerFrontend.Services
 
         public async Task<ChatViewModel> EditChatroom(ChatUpdateModel model)
         {
-            var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.EditChatroom, model);
+
+            if (string.IsNullOrEmpty(model.Topic))
+                throw new ArgumentNullException("Topic cannot be null");
+
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(model.Topic), "Topic");
+
+            content.Add(new StringContent(model.Id.ToString()), "Id");
+
+            if (model.File is not null)
+            {
+                var file = model.File;
+                var fileStream = new StreamContent(file.OpenReadStream());
+                fileStream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                content.Add(fileStream, "File", file.FileName);
+            }
+
+            var httpResponseMessage = await _httpClient.PutAsync(RoutesAPI.EditChatroom, content);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var response = await JsonSerializer.DeserializeAsync<ChatViewModel>(contentStream);
