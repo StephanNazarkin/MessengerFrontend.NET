@@ -6,14 +6,11 @@ using System.Text.Json;
 
 namespace MessengerFrontend.Services
 {
-    public class AccountServiceAPI : IAccountServiceAPI
+    public class AccountServiceAPI : BaseServiceAPI, IAccountServiceAPI
     {
-        private readonly HttpClient _httpClient;
 
-        public AccountServiceAPI(IHttpClientFactory httpClientFactory)
-        {
-            _httpClient = httpClientFactory.CreateClient("Messenger");
-        }
+        public AccountServiceAPI(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        { }
 
         public async Task<UserViewModel> Register(UserViewModel model) 
         {

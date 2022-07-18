@@ -2,7 +2,10 @@
 {
     public static class RoutesAPI
     {
+        public const string ApiName = "Messenger";
+
         #region Account
+
         public const string Register = "Account/Register";
 
         public const string Login = "Account/Login";
@@ -26,9 +29,11 @@
         public const string UpdateUser = "Account/UpdateUser";
 
         public const string GetUserByUserName = "/Account/GetUserByUserName?userName={0}";
+
         #endregion
 
         #region Chatroom
+
         public const string GetAllChatrooms = "Chatroom/GetAllChatrooms";
 
         public const string CreateChatroom = "Chatroom/CreateChatroom";
@@ -56,9 +61,11 @@
         public const string GetAllUsersFromChat = "Chatroom/GetAllUsers?chatId={0}";
 
         public const string GetChatroom = "Chatroom/GetChatroom?chatId={0}";
+
         #endregion
 
         #region Message
+
         public const string SendMessage = "Message/SendMessage";
 
         public const string EditMessage = "Message/EditMessage";
@@ -68,6 +75,7 @@
         public const string GetMessage = "Message/GetMessage?messageId={0}";
 
         public const string GetMessagesFromChat = "Message/GetMessagesFromChat?chatId={0}";
+
         #endregion
     }
 }
