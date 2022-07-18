@@ -143,7 +143,7 @@ namespace MessengerFrontend.Services
         public async void ChangePassword(UserChangePasswordModel userChangePasswordModel, string token)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/ChangePassword", userChangePasswordModel);
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.ChangePassword, userChangePasswordModel);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
         }
     }
