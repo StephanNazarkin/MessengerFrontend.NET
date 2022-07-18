@@ -19,7 +19,6 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.Register, model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
 
@@ -30,7 +29,6 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.Login, model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-            
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -41,7 +39,6 @@ namespace MessengerFrontend.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllFriends);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var friends = await JsonSerializer.DeserializeAsync
                 <IEnumerable<UserViewModel>>(contentStream);
 
@@ -87,7 +84,6 @@ namespace MessengerFrontend.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllUsers);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var allUsers = await JsonSerializer.DeserializeAsync
                 <IEnumerable<UserViewModel>>(contentStream);
 
@@ -99,7 +95,6 @@ namespace MessengerFrontend.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.AddFriend, userId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -110,7 +105,6 @@ namespace MessengerFrontend.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.DeleteAsync(string.Format(RoutesAPI.DeleteFriend, userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -121,7 +115,6 @@ namespace MessengerFrontend.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.BlockUser, userId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -132,7 +125,6 @@ namespace MessengerFrontend.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.DeleteAsync(string.Format(RoutesAPI.UnblockUser, userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -143,10 +135,16 @@ namespace MessengerFrontend.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.UpdateUser, userModel);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            var updatedUser = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
-            var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
+            return updatedUser;
+        }
 
-            return user;
+        public async void ChangePassword(UserChangePasswordModel userChangePasswordModel, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.ChangePassword, userChangePasswordModel);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
         }
     }
 }
