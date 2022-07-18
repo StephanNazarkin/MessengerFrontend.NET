@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+}
+<div class="modal-header">
+    <h5 class="modal-title" id="inviteFriendModalLabel">Invite Friend</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    @foreach (var friend in Model)
+    {
+        <div class="d-flex justify-content-between align-items-center border-top border-bottom p-1">
+            <p class="m-0">
+                @friend.UserName
+            </p>
+            <div>
+                @Html.ActionLink("Invite", "AddToChatroom", "Chat", 
+                                new {
+                                    chatId = ViewBag.ChatId,
+                                    userId = friend.Id
+                                }, new Dictionary<string, object>{{"class", "btn btn-primary" }})
+            </div>
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>

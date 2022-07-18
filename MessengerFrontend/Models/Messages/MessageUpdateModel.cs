@@ -4,21 +4,15 @@ using System.Text.Json.Serialization;
 
 namespace MessengerFrontend.Models.Messages
 {
-    public class MessageViewModel
+    public class MessageUpdateModel
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonPropertyName("user")]
-        public UserViewModel? User { get; set; }
-
-        [JsonPropertyName("images")]
-        public ICollection<MessageImageViewModel>? Images { get; set; }
-
         [JsonPropertyName("text")]
         public string? Text { get; set; }
 
-        [JsonPropertyName("createdTime")]
-        public DateTime CreatedTime { get; set; }
+        [JsonPropertyName("chatId")]
+        public int ChatId { get; set; }
     }
 }

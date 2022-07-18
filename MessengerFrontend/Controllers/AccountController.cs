@@ -1,4 +1,6 @@
-﻿using MessengerFrontend.Models.Users;
+﻿using MessengerFrontend.Filters;
+using MessengerFrontend.Models.Users;
+using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +9,7 @@ namespace MessengerFrontend.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountServiceAPI _accountServiceAPI;
+        private string Token => HttpContext.Session.GetString("Token");
 
         public AccountController(IAccountServiceAPI accountServiceAPI)
         {
@@ -19,12 +22,12 @@ namespace MessengerFrontend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> TryLogin(UserViewModel model)
+        public async Task<IActionResult> TryLogin(UserLoginModel model)
         {
             UserViewModel loggedUser = await _accountServiceAPI.Login(model);
             HttpContext.Session.SetString("Token", loggedUser.Token);
 
-            return Redirect("~/Chat/Index/");
+            return Redirect(RoutesApp.Home);
         }
 
         public IActionResult Register()
@@ -37,7 +40,7 @@ namespace MessengerFrontend.Controllers
         {
             await _accountServiceAPI.Register(model);
 
-            return Redirect("~/Account/ConfirmEmail/");
+            return Redirect(RoutesApp.ConfirmEmail);
         }
 
         public IActionResult ConfirmEmail()
@@ -53,6 +56,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> EditProfileModal()
         {
             var currentUser = await _accountServiceAPI.GetCurrentUser();
@@ -61,33 +65,37 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> SearchModal()
         {
-            var currentUser = await _accountServiceAPI.GetCurrentUser();
+            var currentUser = await _accountServiceAPI.GetCurrentUser(Token);
             ViewBag.CurrentUser = currentUser;
-            var allUsers = await _accountServiceAPI.GetAllUsers();
+            var allUsers = await _accountServiceAPI.GetAllUsers(Token);
             ViewBag.AllUsers = allUsers;
 
             return View();
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> FriendListModal()
         {
-            var allFriends = await _accountServiceAPI.GetAllFriends();
+            var allFriends = await _accountServiceAPI.GetAllFriends(Token);
             ViewBag.AllFriends = allFriends;
 
             return View();
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> BlackListModal()
         {
-            var allBlockedUsers = await _accountServiceAPI.GetAllBlockedUsers();
+            var allBlockedUsers = await _accountServiceAPI.GetAllBlockedUsers(Token);
             ViewBag.AllBlockedUsers = allBlockedUsers;
 
             return View();
         }
 
-        public async Task<IActionResult> ChangePasswordModal()
+        [AuthorizationFilter]
+        public async IActionResult ChangePasswordModal()
         {
             var currentUser = await _accountServiceAPI.GetCurrentUser();
             ViewBag.CurrentUser = currentUser;
@@ -95,55 +103,53 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUserByUserName(string userName)
-        {
-            var user = await _accountServiceAPI.GetUserByUserName(userName);
-            ViewBag.FoundUser = user;
 
-            return View("FoundUser");
-        }
-
+        [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> AddFriend(string userId)
         {
-            await _accountServiceAPI.AddFriend(userId);
+            await _accountServiceAPI.AddFriend(userId, Token);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
+        [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> DeleteFriend(string userId)
         {
-            await _accountServiceAPI.DeleteFriend(userId);
+            await _accountServiceAPI.DeleteFriend(userId, Token);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
+        [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> BlockUser(string userId)
         {
-            await _accountServiceAPI.BlockUser(userId);
+            await _accountServiceAPI.BlockUser(userId, Token);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
+        [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> UnblockUser(string userId)
         {
-            await _accountServiceAPI.UnblockUser(userId);
+            await _accountServiceAPI.UnblockUser(userId, Token);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
+        [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UserUpdateModel userModel)
         {
-            await _accountServiceAPI.UpdateUser(userModel);
+            await _accountServiceAPI.UpdateUser(userModel, Token);
 
-            return Redirect("~/Account/Settings/");
+            return Redirect(RoutesApp.AccountSettings);
         }
 
+        [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> ChangePassword(UserChangePasswordModel userModel)
         {

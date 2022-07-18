@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,9 +12,9 @@
 </head>
 <body>
     <div id="page">
-        <div class="sidebar border-end">
+        <div class="sidebar border-end shadow-lg" style="">
             <div class="d-grid gap-2 p-2">
-                <a class="btn btn-link btn-lg" href="#">
+                <a class="btn btn-link btn-lg" href="~/Account/Settings">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-nut" viewBox="0 0 16 16">
                     <path d="m11.42 2 3.428 6-3.428 6H4.58L1.152 8 4.58 2h6.84zM4.58 1a1 1 0 0 0-.868.504l-3.428 6a1 1 0 0 0 0 .992l3.428 6A1 1 0 0 0 4.58 15h6.84a1 1 0 0 0 .868-.504l3.429-6a1 1 0 0 0 0-.992l-3.429-6A1 1 0 0 0 11.42 1H4.58z"/>
                     <path d="M6.848 5.933a2.5 2.5 0 1 0 2.5 4.33 2.5 2.5 0 0 0-2.5-4.33zm-1.78 3.915a3.5 3.5 0 1 1 6.061-3.5 3.5 3.5 0 0 1-6.062 3.5z"/>
@@ -20,13 +22,21 @@
                 Edit your profile
             </a>
             </div>
+            <div class="border-top p-3 d-grid gap-2">
+                <a href="~/Chat/CreateChat" class="btn btn-primary modal-link" data-bs-toggle="modal" data-bs-target="#modal">
+                    Create chatroom
+                </a>
+            </div>
             <div class="chatlist-wrapper">
                 <div class="list-group list-group-flush border-top border-bottom">
                     @foreach (var chat in ViewBag.AllChats)
                     {
-                        <a class="list-group-item list-group-item-action" href="~/chat/index/@chat.Id">
-                            <h5>@chat.Topic</h5>
-                            <p>@chat.Users.Count members</p>
+                        <a class="list-group-item list-group-item-action d-flex align-items-center px-1" href="~/chat/index/@chat.Id">
+                            <img src="@(Configuration["Api"] + chat.Image.Path)" alt="image" class = "img-thumbnail rounded-circle flex-shrink-0 me-1" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div class="chat-info">
+                                <h5>@chat.Topic</h5>
+                                <p>@chat.Messages.Count messages</p>
+                            </div>
                         </a>
                     }
                 </div>
@@ -35,6 +45,15 @@
         <main role="main">
             @RenderBody()
         </main>
+        <!-- modal -->
+        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content modal-content-body">
+            
+                </div>
+            </div>
+        </div>
+        <!-- modal -->
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

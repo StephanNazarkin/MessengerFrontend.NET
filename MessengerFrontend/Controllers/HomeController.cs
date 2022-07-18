@@ -1,4 +1,5 @@
-﻿using MessengerFrontend.Models;
+﻿using MessengerFrontend.Filters;
+using MessengerFrontend.Models;
 using MessengerFrontend.Services;
 using MessengerFrontend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,15 +10,17 @@ namespace MessengerFrontend.Controllers
     public class HomeController : Controller
     {
         private readonly IChatServiceAPI _chatServiceAPI;
+        private string Token => HttpContext.Session.GetString("Token");
 
         public HomeController(IChatServiceAPI chatServiceAPI)
         {
             _chatServiceAPI = chatServiceAPI;
         }
 
+        [AuthorizationFilter]
         public async Task<IActionResult> Index()
         {
-            var result = await _chatServiceAPI.GetAllChatrooms();
+            var result = await _chatServiceAPI.GetAllChatrooms(Token);
             ViewBag.AllChats = result;
             return View();
         }

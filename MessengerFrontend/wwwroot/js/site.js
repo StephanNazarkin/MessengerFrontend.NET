@@ -3,9 +3,18 @@
 
 // Write your JavaScript code.
 $(document).ready(function () {
+    loadMessages();
     $('.modal-link').click(function (e) {
         e.preventDefault();
         var page = $(this).attr('href');
         $('.modal-content-body').load(page);
     });
 });
+
+function loadMessages() {
+    $('#messages-list-wrapper').ready(function (e) {
+        let path = window.location.pathname;
+        let chatId = path.substring(path.lastIndexOf('/') + 1);
+        $('#messages-list-wrapper').load(window.location.origin + '/Chat/GetAllMessages/' + chatId);
+    });
+}
