@@ -50,7 +50,7 @@ namespace MessengerFrontend.Controllers
 
         public async Task<IActionResult> SettingsAsync()
         {
-            var currentUser = await _accountServiceAPI.GetCurrentUser();
+            var currentUser = await _accountServiceAPI.GetCurrentUser(Token);
             ViewBag.CurrentUser = currentUser;
 
             return View();
@@ -59,13 +59,12 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> EditProfileModal()
         {
-            var currentUser = await _accountServiceAPI.GetCurrentUser();
+            var currentUser = await _accountServiceAPI.GetCurrentUser(Token);
             ViewBag.CurrentUser = currentUser;
 
             return View();
         }
 
-        [AuthorizationFilter]
         public async Task<IActionResult> SearchModal()
         {
             var currentUser = await _accountServiceAPI.GetCurrentUser(Token);
@@ -95,14 +94,13 @@ namespace MessengerFrontend.Controllers
         }
 
         [AuthorizationFilter]
-        public async IActionResult ChangePasswordModal()
+        public async Task<IActionResult> ChangePasswordModal()
         {
-            var currentUser = await _accountServiceAPI.GetCurrentUser();
+            var currentUser = await _accountServiceAPI.GetCurrentUser(Token);
             ViewBag.CurrentUser = currentUser;
 
             return View();
         }
-
 
         [AuthorizationFilter]
         [HttpGet]
@@ -153,9 +151,9 @@ namespace MessengerFrontend.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(UserChangePasswordModel userModel)
         {
-            _accountServiceAPI.ChangePassword(userModel);
+            _accountServiceAPI.ChangePassword(userModel, Token);
 
-            return Redirect("~/Account/Login/");
+            return Redirect(RoutesApp.Login);
         }
 
     }
