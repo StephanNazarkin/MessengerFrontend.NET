@@ -16,7 +16,7 @@ namespace MessengerFrontend.Controllers
         {
             _chatServiceAPI = chatServiceAPI;
         }
-
+        
         [AuthorizationFilter]
         public async Task<IActionResult> Index()
         {

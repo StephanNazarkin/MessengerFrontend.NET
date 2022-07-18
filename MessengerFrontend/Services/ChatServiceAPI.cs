@@ -8,10 +8,14 @@ using System.Text.Json;
 
 namespace MessengerFrontend.Services
 {
-    public class ChatServiceAPI : BaseServiceAPI, IChatServiceAPI
+    public class ChatServiceAPI : IChatServiceAPI
     {
-        public ChatServiceAPI(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
-        { }
+        private readonly HttpClient _httpClient;
+
+        public ChatServiceAPI(IHttpClientFactory httpClientFactory)
+        {
+            _httpClient = httpClientFactory.CreateClient("Messenger");
+        }
 
         public async Task<IEnumerable<ChatViewModel>> GetAllChatrooms(string token)
         {
