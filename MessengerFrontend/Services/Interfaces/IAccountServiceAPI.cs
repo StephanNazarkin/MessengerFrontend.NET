@@ -16,5 +16,6 @@ namespace MessengerFrontend.Services.Interfaces
         public Task<UserViewModel> BlockUser(string userId);
         public Task<UserViewModel> UnblockUser(string userId);
         public Task<UserViewModel> UpdateUser(UserUpdateModel userModel);
+        public void ChangePassword(UserChangePasswordModel userModel);
     }
 }

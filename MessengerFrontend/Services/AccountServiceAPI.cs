@@ -18,7 +18,6 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/Register", model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -28,7 +27,6 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/Register", model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -39,7 +37,6 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.GetAsync("Account/GetAllFriends");
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var friends = await JsonSerializer.DeserializeAsync
                 <IEnumerable<UserViewModel>>(contentStream);
 
@@ -81,7 +78,6 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.GetAsync("Account/GetAllUsers");
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var allUsers = await JsonSerializer.DeserializeAsync
                 <IEnumerable<UserViewModel>>(contentStream);
 
@@ -92,7 +88,6 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/AddFriend", userId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -102,7 +97,6 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.DeleteAsync(string.Format("Account/DeleteFriend?friendId={0}", userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -112,7 +106,6 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/BlockUser", userId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
@@ -122,20 +115,24 @@ namespace MessengerFrontend.Services
         {
             var httpResponseMessage = await _httpClient.DeleteAsync(string.Format("Account/UnblockUser?blockedUserId={0}", userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
             return user;
         }
 
-        public async Task<UserViewModel> UpdateUser(UserUpdateModel userModel)
+        public async Task<UserViewModel> UpdateUser(UserUpdateModel userUpdateModel)
         {
-            var httpResponseMessage = await _httpClient.PutAsJsonAsync("Account/UpdateUser", userModel);
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/UpdateUser", userUpdateModel);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            var updatedUser = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
-            var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
+            return updatedUser;
+        }
 
-            return user;
+        public async void ChangePassword(UserChangePasswordModel userChangePasswordModel)
+        {
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync("Account/ChangePassword", userChangePasswordModel);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
         }
     }
 }

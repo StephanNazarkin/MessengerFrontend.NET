@@ -47,11 +47,17 @@ namespace MessengerFrontend.Controllers
 
         public async Task<IActionResult> SettingsAsync()
         {
+            var currentUser = await _accountServiceAPI.GetCurrentUser();
+            ViewBag.CurrentUser = currentUser;
+
             return View();
         }
 
-        public IActionResult EditProfileModal()
+        public async Task<IActionResult> EditProfileModal()
         {
+            var currentUser = await _accountServiceAPI.GetCurrentUser();
+            ViewBag.CurrentUser = currentUser;
+
             return View();
         }
 
@@ -61,6 +67,7 @@ namespace MessengerFrontend.Controllers
             ViewBag.CurrentUser = currentUser;
             var allUsers = await _accountServiceAPI.GetAllUsers();
             ViewBag.AllUsers = allUsers;
+
             return View();
         }
 
@@ -68,6 +75,7 @@ namespace MessengerFrontend.Controllers
         {
             var allFriends = await _accountServiceAPI.GetAllFriends();
             ViewBag.AllFriends = allFriends;
+
             return View();
         }
 
@@ -75,25 +83,31 @@ namespace MessengerFrontend.Controllers
         {
             var allBlockedUsers = await _accountServiceAPI.GetAllBlockedUsers();
             ViewBag.AllBlockedUsers = allBlockedUsers;
+
             return View();
         }
 
-        public IActionResult ChangePasswordModal()
+        public async Task<IActionResult> ChangePasswordModal()
         {
+            var currentUser = await _accountServiceAPI.GetCurrentUser();
+            ViewBag.CurrentUser = currentUser;
+
             return View();
         }
 
-        [NonAction]
-        public async void GetUserByUserName(string userName)
+        [HttpGet]
+        public async Task<IActionResult> GetUserByUserName(string userName)
         {
             var user = await _accountServiceAPI.GetUserByUserName(userName);
             ViewBag.FoundUser = user;
+
+            return View("FoundUser");
         }
 
         [HttpGet]
         public async Task<IActionResult> AddFriend(string userId)
         {
-            var user = await _accountServiceAPI.AddFriend(userId);
+            await _accountServiceAPI.AddFriend(userId);
 
             return Redirect("~/Account/Settings/");
         }
@@ -101,7 +115,7 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteFriend(string userId)
         {
-            var user = await _accountServiceAPI.DeleteFriend(userId);
+            await _accountServiceAPI.DeleteFriend(userId);
 
             return Redirect("~/Account/Settings/");
         }
@@ -109,7 +123,7 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> BlockUser(string userId)
         {
-            var user = await _accountServiceAPI.BlockUser(userId);
+            await _accountServiceAPI.BlockUser(userId);
 
             return Redirect("~/Account/Settings/");
         }
@@ -117,16 +131,25 @@ namespace MessengerFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> UnblockUser(string userId)
         {
-            var user = await _accountServiceAPI.UnblockUser(userId);
+            await _accountServiceAPI.UnblockUser(userId);
 
             return Redirect("~/Account/Settings/");
         }
 
+        [HttpPost]
         public async Task<IActionResult> UpdateUser(UserUpdateModel userModel)
         {
-            var user = await _accountServiceAPI.UpdateUser(userModel);
+            await _accountServiceAPI.UpdateUser(userModel);
 
             return Redirect("~/Account/Settings/");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(UserChangePasswordModel userModel)
+        {
+            _accountServiceAPI.ChangePassword(userModel);
+
+            return Redirect("~/Account/Login/");
         }
 
     }
