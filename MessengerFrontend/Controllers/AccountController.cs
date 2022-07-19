@@ -21,6 +21,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         [HttpPost]
         public async Task<IActionResult> TryLogin(UserLoginModel model)
         {

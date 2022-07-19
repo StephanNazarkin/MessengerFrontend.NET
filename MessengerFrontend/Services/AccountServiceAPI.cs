@@ -1,6 +1,9 @@
-﻿using MessengerFrontend.Models.Users;
+﻿using MessengerFrontend.Exceptions;
+using MessengerFrontend.Filters;
+using MessengerFrontend.Models.Users;
 using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -21,13 +24,16 @@ namespace MessengerFrontend.Services
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
-
             return user;
         }
 
         public async Task<UserViewModel> Login(UserLoginModel model)
         {
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.Login, model);
+            if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+            {
+                throw new LoginException("You caused a login error!!!");
+            }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
