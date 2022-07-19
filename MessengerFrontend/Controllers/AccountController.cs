@@ -48,6 +48,13 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        public IActionResult LogOut() 
+        {
+            HttpContext.Session.SetString("Token", string.Empty);
+
+            return Redirect(RoutesApp.Login);
+        }
+
         public async Task<IActionResult> SettingsAsync()
         {
             var currentUser = await _accountServiceAPI.GetCurrentUser(Token);
