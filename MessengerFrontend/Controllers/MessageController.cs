@@ -15,6 +15,7 @@ namespace MessengerFrontend.Controllers
             _messageServiceAPI = messageServiceAPI;
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> Index(int id, int chatId)
@@ -25,6 +26,7 @@ namespace MessengerFrontend.Controllers
             return View(model);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> SendMessage(MessageCreateModel model)
@@ -34,6 +36,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(string.Format(RoutesApp.Chat, model.ChatId));
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> Edit(MessageUpdateModel model)
@@ -43,6 +46,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(string.Format(RoutesApp.Chat, model.ChatId));
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> Delete(int id, int chatId)

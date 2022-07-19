@@ -23,6 +23,7 @@ namespace MessengerFrontend.Controllers
             _accountServiceAPI = accountServiceAPI;
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> Index(int id)
@@ -48,6 +49,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> CreateChat(ChatCreateModel model)
@@ -57,6 +59,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(string.Format(RoutesApp.Chat, response.Id));
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> GetAllMessages(int id)
@@ -69,6 +72,7 @@ namespace MessengerFrontend.Controllers
             return View(messages.Reverse());
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> EditChat(int id)
@@ -78,6 +82,7 @@ namespace MessengerFrontend.Controllers
             return View(currentChat);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> EditChat(ChatUpdateModel model)
@@ -87,6 +92,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(string.Format(RoutesApp.Chat, response.Id));
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> DeleteChat(int id)
@@ -96,6 +102,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.Home);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> GetMembers(int id)
@@ -108,6 +115,7 @@ namespace MessengerFrontend.Controllers
             return View(response);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> InviteFriend(int id)
@@ -118,6 +126,7 @@ namespace MessengerFrontend.Controllers
             return View(friends);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> AddToChatroom(ChatInviteModel model)
         {
@@ -126,6 +135,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> SetAdmin(int userAccountId)
         {
@@ -134,6 +144,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> UnsetAdmin(int userAccountId)
         {
@@ -142,6 +153,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> MuteUser(int userAccountId)
         {
@@ -150,6 +162,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> UnmuteUser(int userAccountId)
         {
@@ -158,6 +171,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(string.Format(RoutesApp.Chat, response.ChatId));
         }
 
+        [MessengerExceptionHandlerFilter]
         public async Task<IActionResult> KickUser(int userAccountId)
         {
             var response = await _chatServiceAPI.KickUser(userAccountId);
@@ -165,6 +179,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.Home);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> LeaveChat(int id)
         {

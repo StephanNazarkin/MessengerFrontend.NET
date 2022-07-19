@@ -35,6 +35,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         [HttpPost]
         public async Task<IActionResult> TryRegister(UserViewModel model)
         {
@@ -48,6 +49,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         public async Task<IActionResult> SettingsAsync()
         {
             var currentUser = await _accountServiceAPI.GetCurrentUser();
@@ -56,6 +58,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> EditProfileModal()
         {
@@ -65,6 +68,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         public async Task<IActionResult> SearchModal()
         {
             var currentUser = await _accountServiceAPI.GetCurrentUser();
@@ -75,6 +79,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> FriendListModal()
         {
@@ -84,6 +89,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> BlackListModal()
         {
@@ -93,6 +99,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         public async Task<IActionResult> ChangePasswordModal()
         {
@@ -102,6 +109,7 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> AddFriend(string userId)
@@ -111,6 +119,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.AccountSettings);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> DeleteFriend(string userId)
@@ -120,6 +129,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.AccountSettings);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> BlockUser(string userId)
@@ -129,6 +139,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.AccountSettings);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> UnblockUser(string userId)
@@ -138,6 +149,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.AccountSettings);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UserUpdateModel userModel)
@@ -147,6 +159,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.AccountSettings);
         }
 
+        [MessengerExceptionHandlerFilter]
         [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> ChangePassword(UserChangePasswordModel userModel)
