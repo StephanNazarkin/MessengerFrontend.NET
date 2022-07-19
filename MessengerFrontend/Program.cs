@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IAccountServiceAPI, AccountServiceAPI>();
 builder.Services.AddTransient<IChatServiceAPI, ChatServiceAPI>();
 builder.Services.AddTransient<IMessageServiceAPI, MessageServiceAPI>();

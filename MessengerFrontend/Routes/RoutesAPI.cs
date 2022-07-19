@@ -4,6 +4,8 @@
     {
         public const string ApiName = "Messenger";
 
+        public const string TokenHeader = "Bearer";
+
         #region Account
 
         public const string Register = "Account/Register";
