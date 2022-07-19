@@ -8,18 +8,13 @@ using System.Text.Json;
 
 namespace MessengerFrontend.Services
 {
-    public class ChatServiceAPI : IChatServiceAPI
+    public class ChatServiceAPI : BaseServiceAPI, IChatServiceAPI
     {
-        private readonly HttpClient _httpClient;
-
-        public ChatServiceAPI(IHttpClientFactory httpClientFactory)
-        {
-            _httpClient = httpClientFactory.CreateClient("Messenger");
-        }
+        public ChatServiceAPI(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor)
+        { }
 
         public async Task<IEnumerable<ChatViewModel>> GetAllChatrooms(string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllChatrooms);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -30,7 +25,6 @@ namespace MessengerFrontend.Services
 
         public async Task<ChatViewModel> GetChatroom(int id, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetChatroom, id));
 
             if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -69,8 +63,6 @@ namespace MessengerFrontend.Services
                 content.Add(fileStream, "File", file.FileName);
             }
             
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            
             var httpResponseMessage = await _httpClient.PostAsync(RoutesAPI.CreateChatroom, content);
 
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -98,8 +90,6 @@ namespace MessengerFrontend.Services
                 fileStream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
                 content.Add(fileStream, "File", file.FileName);
             }
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             
             var httpResponseMessage = await _httpClient.PutAsync(RoutesAPI.EditChatroom, content);
             
@@ -112,7 +102,6 @@ namespace MessengerFrontend.Services
 
         public async Task<bool> DeleteChatroom(int chatId, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.SoftDeleteChatroom, chatId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -123,7 +112,6 @@ namespace MessengerFrontend.Services
 
         public async Task<IEnumerable<UserAccountViewModel>> GetAllMembers(int id, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetAllUsersFromChat, id));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -134,7 +122,6 @@ namespace MessengerFrontend.Services
 
         public async Task<UserAccountViewModel> AddToChatroom(ChatInviteModel model, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.AddToChatroom, model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -145,7 +132,6 @@ namespace MessengerFrontend.Services
 
         public async Task<UserAccountViewModel> GetCurrentUserAccount(int chatId, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetCurrentUserAccount, chatId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -156,7 +142,6 @@ namespace MessengerFrontend.Services
 
         public async Task<UserAccountViewModel> SetAdmin(int userAccountId, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatSetAdmin, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -167,7 +152,6 @@ namespace MessengerFrontend.Services
 
         public async Task<UserAccountViewModel> UnsetAdmin(int userAccountId, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatUnsetAdmin, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -178,7 +162,6 @@ namespace MessengerFrontend.Services
 
         public async Task<UserAccountViewModel> MuteUser(int userAccountId, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatBanUser, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -189,7 +172,6 @@ namespace MessengerFrontend.Services
 
         public async Task<UserAccountViewModel> UnmuteUser(int userAccountId, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatUnbanUser, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -200,7 +182,6 @@ namespace MessengerFrontend.Services
 
         public async Task<bool> KickUser(int userAccountId, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatKickUser, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -211,7 +192,6 @@ namespace MessengerFrontend.Services
 
         public async Task<bool> LeaveChat(int chatId, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.LeaveFromChatroom, chatId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
