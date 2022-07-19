@@ -13,7 +13,7 @@ namespace MessengerFrontend.Services
         public ChatServiceAPI(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor)
         { }
 
-        public async Task<IEnumerable<ChatViewModel>> GetAllChatrooms(string token)
+        public async Task<IEnumerable<ChatViewModel>> GetAllChatrooms()
         {
             var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllChatrooms);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -23,7 +23,7 @@ namespace MessengerFrontend.Services
             return chats;
         }
 
-        public async Task<ChatViewModel> GetChatroom(int id, string token)
+        public async Task<ChatViewModel> GetChatroom(int id)
         {
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetChatroom, id));
 
@@ -46,7 +46,7 @@ namespace MessengerFrontend.Services
             return chat;
         }
 
-        public async Task<ChatViewModel> CreateChatroom(ChatCreateModel model, string token)
+        public async Task<ChatViewModel> CreateChatroom(ChatCreateModel model)
         {
             if (string.IsNullOrEmpty(model.Topic))
                 throw new ArgumentNullException("Topic cannot be null");
@@ -72,7 +72,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<ChatViewModel> EditChatroom(ChatUpdateModel model, string token)
+        public async Task<ChatViewModel> EditChatroom(ChatUpdateModel model)
         {
             if (string.IsNullOrEmpty(model.Topic))
                 throw new ArgumentNullException("Topic cannot be null");
@@ -100,7 +100,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<bool> DeleteChatroom(int chatId, string token)
+        public async Task<bool> DeleteChatroom(int chatId)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.SoftDeleteChatroom, chatId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -110,7 +110,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<IEnumerable<UserAccountViewModel>> GetAllMembers(int id, string token)
+        public async Task<IEnumerable<UserAccountViewModel>> GetAllMembers(int id)
         {
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetAllUsersFromChat, id));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -120,7 +120,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<UserAccountViewModel> AddToChatroom(ChatInviteModel model, string token)
+        public async Task<UserAccountViewModel> AddToChatroom(ChatInviteModel model)
         {
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.AddToChatroom, model);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -130,7 +130,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<UserAccountViewModel> GetCurrentUserAccount(int chatId, string token)
+        public async Task<UserAccountViewModel> GetCurrentUserAccount(int chatId)
         {
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetCurrentUserAccount, chatId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -140,7 +140,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<UserAccountViewModel> SetAdmin(int userAccountId, string token)
+        public async Task<UserAccountViewModel> SetAdmin(int userAccountId)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatSetAdmin, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -150,7 +150,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<UserAccountViewModel> UnsetAdmin(int userAccountId, string token)
+        public async Task<UserAccountViewModel> UnsetAdmin(int userAccountId)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatUnsetAdmin, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -160,7 +160,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<UserAccountViewModel> MuteUser(int userAccountId, string token)
+        public async Task<UserAccountViewModel> MuteUser(int userAccountId)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatBanUser, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -170,7 +170,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<UserAccountViewModel> UnmuteUser(int userAccountId, string token)
+        public async Task<UserAccountViewModel> UnmuteUser(int userAccountId)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatUnbanUser, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -180,7 +180,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<bool> KickUser(int userAccountId, string token)
+        public async Task<bool> KickUser(int userAccountId)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChatKickUser, userAccountId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -190,7 +190,7 @@ namespace MessengerFrontend.Services
             return response;
         }
 
-        public async Task<bool> LeaveChat(int chatId, string token)
+        public async Task<bool> LeaveChat(int chatId)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.LeaveFromChatroom, chatId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
