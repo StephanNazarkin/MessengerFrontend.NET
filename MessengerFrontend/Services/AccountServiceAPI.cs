@@ -132,8 +132,26 @@ namespace MessengerFrontend.Services
 
         public async Task<UserViewModel> UpdateUser(UserUpdateModel userModel, string token)
         {
+            if (string.IsNullOrEmpty(userModel.UserName) || string.IsNullOrEmpty(userModel.Email))
+            {
+                throw new ArgumentNullException("User name or email cannot be null");
+            }
+
+            using var content = new MultipartFormDataContent();
+            content.Add(new StringContent(userModel.UserName), "UserName");
+            content.Add(new StringContent(userModel.Email), "Email");
+            content.Add(new StringContent(userModel.Id), "Id");
+
+            if (userModel.File is not null)
+            {
+                var file = userModel.File;
+                var fileStream = new StreamContent(file.OpenReadStream());
+                fileStream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                content.Add(fileStream, "File", file.FileName);
+            }
+
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.UpdateUser, userModel);
+            var httpResponseMessage = await _httpClient.PutAsync(RoutesAPI.UpdateUser, content);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var updatedUser = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
 
