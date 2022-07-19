@@ -9,14 +9,10 @@ using System.Text.Json;
 
 namespace MessengerFrontend.Services
 {
-    public class AccountServiceAPI : IAccountServiceAPI
+    public class AccountServiceAPI : BaseServiceAPI, IAccountServiceAPI
     {
-        private readonly HttpClient _httpClient;
-
-        public AccountServiceAPI(IHttpClientFactory httpClientFactory)
-        {
-            _httpClient = httpClientFactory.CreateClient("Messenger");
-        }
+        public AccountServiceAPI(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor)
+        { }
 
         public async Task<UserViewModel> Register(UserViewModel model) 
         {
@@ -40,9 +36,8 @@ namespace MessengerFrontend.Services
             return user;
         }
 
-        public async Task<IEnumerable<UserViewModel>> GetAllFriends(string token)
+        public async Task<IEnumerable<UserViewModel>> GetAllFriends()
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllFriends);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var friends = await JsonSerializer.DeserializeAsync
@@ -52,9 +47,8 @@ namespace MessengerFrontend.Services
 
         }
 
-        public async Task<IEnumerable<UserViewModel>> GetAllBlockedUsers(string token)
+        public async Task<IEnumerable<UserViewModel>> GetAllBlockedUsers()
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllBlockedUsers);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
@@ -64,9 +58,8 @@ namespace MessengerFrontend.Services
             return blockedUsers;
         }
         
-        public async Task<UserViewModel> GetCurrentUser(string token)
+        public async Task<UserViewModel> GetCurrentUser()
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetCurrentUser);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -74,9 +67,8 @@ namespace MessengerFrontend.Services
             return user;
         }
 
-        public async Task<UserViewModel> GetUserByUserName(string userName, string token)
+        public async Task<UserViewModel> GetUserByUserName(string userName)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.
                 GetAsync(string.Format(RoutesAPI.GetUserByUserName, userName));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -85,9 +77,8 @@ namespace MessengerFrontend.Services
             return user;
         }
 
-        public async Task<IEnumerable<UserViewModel>> GetAllUsers(string token)
+        public async Task<IEnumerable<UserViewModel>> GetAllUsers()
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllUsers);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var allUsers = await JsonSerializer.DeserializeAsync
@@ -96,9 +87,8 @@ namespace MessengerFrontend.Services
             return allUsers;
         }
 
-        public async Task<UserViewModel> AddFriend(string userId, string token)
+        public async Task<UserViewModel> AddFriend(string userId)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.AddFriend, userId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -106,9 +96,8 @@ namespace MessengerFrontend.Services
             return user;
         }
 
-        public async Task<UserViewModel> DeleteFriend(string userId, string token)
+        public async Task<UserViewModel> DeleteFriend(string userId)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.DeleteAsync(string.Format(RoutesAPI.DeleteFriend, userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -116,9 +105,8 @@ namespace MessengerFrontend.Services
             return user;
         }
 
-        public async Task<UserViewModel> BlockUser(string userId, string token)
+        public async Task<UserViewModel> BlockUser(string userId)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.BlockUser, userId);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -126,9 +114,8 @@ namespace MessengerFrontend.Services
             return user;
         }
 
-        public async Task<UserViewModel> UnblockUser(string userId, string token)
+        public async Task<UserViewModel> UnblockUser(string userId)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.DeleteAsync(string.Format(RoutesAPI.UnblockUser, userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var user = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -136,7 +123,7 @@ namespace MessengerFrontend.Services
             return user;
         }
 
-        public async Task<UserViewModel> UpdateUser(UserUpdateModel userModel, string token)
+        public async Task<UserViewModel> UpdateUser(UserUpdateModel userModel)
         {
             if (string.IsNullOrEmpty(userModel.UserName) || string.IsNullOrEmpty(userModel.Email))
             {
@@ -156,7 +143,6 @@ namespace MessengerFrontend.Services
                 content.Add(fileStream, "File", file.FileName);
             }
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsync(RoutesAPI.UpdateUser, content);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var updatedUser = await JsonSerializer.DeserializeAsync<UserViewModel>(contentStream);
@@ -164,9 +150,8 @@ namespace MessengerFrontend.Services
             return updatedUser;
         }
 
-        public async void ChangePassword(UserChangePasswordModel userChangePasswordModel, string token)
+        public async void ChangePassword(UserChangePasswordModel userChangePasswordModel)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.ChangePassword, userChangePasswordModel);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
         }
