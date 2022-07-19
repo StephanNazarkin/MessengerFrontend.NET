@@ -1,16 +1,28 @@
 ﻿@{
     Layout = null;
 }
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @model MessengerFrontend.Models.Users.UserUpdateModel
 
 <div class="modal-header">
     <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<form asp-action="UpdateUser" asp-controller="Account" method="post">
+<form asp-action="UpdateUser" asp-controller="Account" method="post" enctype="multipart/form-data">
 <div class="modal-body">
 
         @Html.Hidden("Id", (object)ViewBag.CurrentUser.Id)
+
+        <div class="input-group mb-3 text-center d-flex flex-column align-items-center" id="editUserImageWrapper">
+            <label class="input-group-text d-flex flex-column m-auto" for="editUserImage" style="width: 80%;">
+                <img src="@(Configuration["Api"] + ViewBag.CurrentUser.Image.Path)" class="img-thumbnail rounded-circle flex-shrink-0" alt="image" 
+                style="width: 180px; height: 180px; object-fit: cover;">
+                Change Image
+            </label>
+            <input type="file" name="File" class="form-control" id="editUserImage" accept="image/*" style="width: 80%;">
+        </div>
+
         <div class="form-outline mb-4">
             <input asp-for="UserName" type="text" class="form-control form-control-lg" id="userNameInput" value=@ViewBag.CurrentUser.UserName/>
             <label asp-for="UserName" class="form-label">New User Name</label>

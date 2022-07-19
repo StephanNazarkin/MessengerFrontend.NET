@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using MessengerFrontend.Models.UserImages;
+using System.Text.Json.Serialization;
 
 namespace MessengerFrontend.Models.Users
 {
@@ -18,5 +19,8 @@ namespace MessengerFrontend.Models.Users
 
         [JsonPropertyName("token")]
         public string Token { get; set; }
+
+        [JsonPropertyName("image")]
+        public UserImageViewModel Image { get; set; }
     }
 }
