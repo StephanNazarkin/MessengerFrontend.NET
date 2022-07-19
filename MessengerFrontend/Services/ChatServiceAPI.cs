@@ -17,7 +17,7 @@ namespace MessengerFrontend.Services
         public async Task<IEnumerable<ChatViewModel>> GetAllChatrooms()
         {
             var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllChatrooms);
-            if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+            if (!httpResponseMessage.IsSuccessStatusCode)
             {
                 throw new LoadChatsException("Sorry, we can't load your chats. It's most likely a server or connection issue.");
             }

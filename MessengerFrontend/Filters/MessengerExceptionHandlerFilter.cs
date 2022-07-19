@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MessengerFrontend.Filters
 {
     public class MessengerExceptionHandlerFilter : Attribute, IExceptionFilter
     {
-        public void OnException(ExceptionContext context)
+        public void OnException(ExceptionContext filterContext)
         {
-            string actionName = context.ActionDescriptor.DisplayName;
-            string exceptionStack = context.Exception.StackTrace;
-            string exceptionMessage = context.Exception.Message;
-            context.Result = new ContentResult
-            {
-                Content = $"{actionName} caused that exception: \n {exceptionMessage}"
-            };
-            context.ExceptionHandled = true;
+            var actionName = filterContext.RouteData.Values["action"];
+            var exceptionMessage = filterContext.Exception.Message;
+            filterContext.Result = new RedirectToActionResult("Exception", "Error", new { actionName = actionName, errorMessage = exceptionMessage });
+            /*            context.Result = new ContentResult
+                        {
+                            Content = $"{actionName} caused that exception: \n {exceptionMessage}"
+                        };*/
+            filterContext.ExceptionHandled = true;
         }
     }
 }

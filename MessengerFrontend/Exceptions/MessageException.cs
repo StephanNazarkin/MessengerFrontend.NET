@@ -2,7 +2,7 @@
 {
     public class MessageException : Exception
     {
-        public ChatroomException() : base() { }
-        public ChatroomException(string message) : base(message) { }
+        public MessageException() : base() { }
+        public MessageException(string message) : base(message) { }
     }
 }
