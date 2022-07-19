@@ -9,5 +9,7 @@
         public const string AccountSettings = "~/Account/Settings";
 
         public const string ConfirmEmail = "~/Account/ConfirmEmail";
+
+        public const string Login = "~/Account/Login/";
     }
 }

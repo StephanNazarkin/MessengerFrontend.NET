@@ -32,6 +32,8 @@
 
         public const string GetUserByUserName = "/Account/GetUserByUserName?userName={0}";
 
+        public const string ChangePassword = "Account/ChangePassword";
+
         #endregion
 
         #region Chatroom

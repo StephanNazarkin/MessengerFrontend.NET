@@ -1,27 +1,41 @@
 ﻿@{
     Layout = null;
 }
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@model MessengerFrontend.Models.Users.UserUpdateModel
+
 <div class="modal-header">
     <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<form asp-controller="Account" asp-action="UpdateUser" method="post">
+<form asp-action="UpdateUser" asp-controller="Account" method="post" enctype="multipart/form-data">
 <div class="modal-body">
-        
-        <div class="form-outline mb-4">
-            <input type="text" class="form-control form-control-lg" />
-            <label class="form-label">New User Name</label>
+
+        @Html.Hidden("Id", (object)ViewBag.CurrentUser.Id)
+
+        <div class="input-group mb-3 text-center d-flex flex-column align-items-center" id="editUserImageWrapper">
+            <label class="input-group-text d-flex flex-column m-auto" for="editUserImage" style="width: 80%;">
+                <img src="@(Configuration["Api"] + ViewBag.CurrentUser.Image.Path)" class="img-thumbnail rounded-circle flex-shrink-0" alt="image" 
+                style="width: 180px; height: 180px; object-fit: cover;">
+                Change Image
+            </label>
+            <input type="file" name="File" class="form-control" id="editUserImage" accept="image/*" style="width: 80%;">
         </div>
 
         <div class="form-outline mb-4">
-            <input type="email" class="form-control form-control-lg" />
-            <label class="form-label">New Email</label>
+            <input asp-for="UserName" type="text" class="form-control form-control-lg" id="userNameInput" value=@ViewBag.CurrentUser.UserName/>
+            <label asp-for="UserName" class="form-label">New User Name</label>
+        </div>
+
+        <div class="form-outline mb-4">
+            <input asp-for="Email" type="email" class="form-control form-control-lg" id="emailInput" value=@ViewBag.CurrentUser.Email/>
+            <label asp-for="Email" class="form-label">New Email</label>
         </div>
 
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
- 
     <button type="submit" class="btn btn-primary">Save changes</button>
 </div>
 </form>
