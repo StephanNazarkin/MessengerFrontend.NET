@@ -12,10 +12,16 @@ namespace MessengerFrontend.Services
     {
         private readonly HttpClient _httpClient;
 
+        #region Construcor
+
         public ChatServiceAPI(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("Messenger");
         }
+
+        #endregion
+
+        #region Services
 
         public async Task<IEnumerable<ChatViewModel>> GetAllChatrooms(string token)
         {
@@ -219,5 +225,7 @@ namespace MessengerFrontend.Services
 
             return response;
         }
+
+        #endregion
     }
 }

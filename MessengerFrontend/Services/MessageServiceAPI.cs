@@ -10,10 +10,16 @@ namespace MessengerFrontend.Services
     {
         private readonly HttpClient _httpClient;
 
+        #region Constructor
+
         public MessageServiceAPI(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("Messenger");
         }
+
+        #endregion
+
+        #region Services
 
         public async Task<MessageViewModel> GetMessage(int messageId, string token)
         {
@@ -99,5 +105,7 @@ namespace MessengerFrontend.Services
 
             return result;
         }
+
+        #endregion
     }
 }

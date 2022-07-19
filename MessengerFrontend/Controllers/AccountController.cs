@@ -9,12 +9,19 @@ namespace MessengerFrontend.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountServiceAPI _accountServiceAPI;
+
         private string Token => HttpContext.Session.GetString("Token");
+
+        #region Constructor
 
         public AccountController(IAccountServiceAPI accountServiceAPI)
         {
             _accountServiceAPI = accountServiceAPI;
         }
+
+        #endregion
+
+        #region Services
 
         public IActionResult Login()
         {
@@ -163,5 +170,6 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.Login);
         }
 
+        #endregion
     }
 }

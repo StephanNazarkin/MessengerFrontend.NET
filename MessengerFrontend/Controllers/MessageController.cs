@@ -9,12 +9,19 @@ namespace MessengerFrontend.Controllers
     public class MessageController : Controller
     {
         private readonly IMessageServiceAPI _messageServiceAPI;
+
         private string Token => HttpContext.Session.GetString("Token");
+
+        #region Constructor
 
         public MessageController(IMessageServiceAPI messageServiceAPI)
         {
             _messageServiceAPI = messageServiceAPI;
         }
+
+        #endregion
+
+        #region Services
 
         [AuthorizationFilter]
         [HttpGet]
@@ -52,5 +59,7 @@ namespace MessengerFrontend.Controllers
 
             return Redirect(string.Format(RoutesApp.Chat, chatId));
         }
+
+        #endregion
     }
 }

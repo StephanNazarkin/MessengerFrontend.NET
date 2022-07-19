@@ -10,10 +10,16 @@ namespace MessengerFrontend.Services
     {
         private readonly HttpClient _httpClient;
 
+        #region Constructor
+
         public AccountServiceAPI(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("Messenger");
         }
+
+        #endregion
+
+        #region Services
 
         public async Task<UserViewModel> Register(UserViewModel model) 
         {
@@ -146,5 +152,7 @@ namespace MessengerFrontend.Services
             var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.ChangePassword, userChangePasswordModel);
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
         }
+
+        #endregion
     }
 }
