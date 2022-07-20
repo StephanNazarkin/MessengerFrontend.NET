@@ -1,4 +1,4 @@
-﻿using MessengerFrontend.Filters;
+using MessengerFrontend.Filters;
 using MessengerFrontend.Models.Users;
 using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
@@ -11,10 +11,18 @@ namespace MessengerFrontend.Controllers
     {
         private readonly IAccountServiceAPI _accountServiceAPI;
 
+        private string Token => HttpContext.Session.GetString("Token");
+
+        #region Constructor
+
         public AccountController(IAccountServiceAPI accountServiceAPI)
         {
             _accountServiceAPI = accountServiceAPI;
         }
+
+        #endregion
+
+        #region Services
 
         public IActionResult Login()
         {
@@ -46,6 +54,13 @@ namespace MessengerFrontend.Controllers
         public IActionResult ConfirmEmail()
         {
             return View();
+        }
+
+        public IActionResult LogOut() 
+        {
+            HttpContext.Session.SetString("Token", string.Empty);
+
+            return Redirect(RoutesApp.Login);
         }
 
         public async Task<IActionResult> SettingsAsync()
@@ -156,5 +171,6 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.Login);
         }
 
+        #endregion
     }
 }

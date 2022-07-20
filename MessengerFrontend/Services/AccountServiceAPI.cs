@@ -1,4 +1,4 @@
-﻿using MessengerFrontend.Exceptions;
+using MessengerFrontend.Exceptions;
 using MessengerFrontend.Filters;
 using MessengerFrontend.Models.Users;
 using MessengerFrontend.Routes;
@@ -11,8 +11,14 @@ namespace MessengerFrontend.Services
 {
     public class AccountServiceAPI : BaseServiceAPI, IAccountServiceAPI
     {
+        #region Constructor
+
         public AccountServiceAPI(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor)
         { }
+
+        #endregion
+
+        #region Services
 
         public async Task<UserViewModel> Register(UserViewModel model) 
         {
@@ -198,5 +204,7 @@ namespace MessengerFrontend.Services
             }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
         }
+
+        #endregion
     }
 }

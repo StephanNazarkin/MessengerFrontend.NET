@@ -1,4 +1,4 @@
-﻿using MessengerFrontend.Filters;
+using MessengerFrontend.Filters;
 using MessengerFrontend.Models.Messages;
 using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
@@ -11,10 +11,18 @@ namespace MessengerFrontend.Controllers
     {
         private readonly IMessageServiceAPI _messageServiceAPI;
 
+        private string Token => HttpContext.Session.GetString("Token");
+
+        #region Constructor
+
         public MessageController(IMessageServiceAPI messageServiceAPI)
         {
             _messageServiceAPI = messageServiceAPI;
         }
+
+        #endregion
+
+        #region Services
 
         [AuthorizationFilter]
         [HttpGet]
@@ -52,5 +60,7 @@ namespace MessengerFrontend.Controllers
 
             return Redirect(string.Format(RoutesApp.Chat, chatId));
         }
+
+        #endregion
     }
 }

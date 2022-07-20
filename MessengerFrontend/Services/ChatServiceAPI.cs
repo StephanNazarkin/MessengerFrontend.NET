@@ -11,8 +11,14 @@ namespace MessengerFrontend.Services
 {
     public class ChatServiceAPI : BaseServiceAPI, IChatServiceAPI
     {
+        #region Construcor
+        
         public ChatServiceAPI(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor)
         { }
+        
+        #endregion
+
+        #region Services
 
         public async Task<IEnumerable<ChatViewModel>> GetAllChatrooms()
         {
@@ -242,5 +248,7 @@ namespace MessengerFrontend.Services
 
             return response;
         }
+
+        #endregion
     }
 }

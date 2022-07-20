@@ -1,4 +1,4 @@
-﻿using MessengerFrontend.Exceptions;
+using MessengerFrontend.Exceptions;
 using MessengerFrontend.Models.Messages;
 using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
@@ -9,8 +9,14 @@ namespace MessengerFrontend.Services
 {
     public class MessageServiceAPI : BaseServiceAPI, IMessageServiceAPI
     {
+        #region Constructor
+        
         public MessageServiceAPI(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor)
         { }
+        
+        #endregion
+
+        #region Services
 
         public async Task<MessageViewModel> GetMessage(int messageId)
         {
@@ -107,5 +113,7 @@ namespace MessengerFrontend.Services
 
             return result;
         }
+
+        #endregion
     }
 }

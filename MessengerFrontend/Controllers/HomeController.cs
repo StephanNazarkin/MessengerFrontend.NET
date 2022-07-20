@@ -1,4 +1,4 @@
-﻿using MessengerFrontend.Filters;
+using MessengerFrontend.Filters;
 using MessengerFrontend.Models;
 using MessengerFrontend.Services;
 using MessengerFrontend.Services.Interfaces;
@@ -11,11 +11,19 @@ namespace MessengerFrontend.Controllers
     {
         private readonly IChatServiceAPI _chatServiceAPI;
 
+        private string Token => HttpContext.Session.GetString("Token");
+
+        #region Constructor
+
         public HomeController(IChatServiceAPI chatServiceAPI)
         {
             _chatServiceAPI = chatServiceAPI;
         }
-        
+
+        #endregion
+
+        #region Services
+
         [AuthorizationFilter]
         public async Task<IActionResult> Index()
         {
@@ -29,5 +37,7 @@ namespace MessengerFrontend.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #endregion
     }
 }

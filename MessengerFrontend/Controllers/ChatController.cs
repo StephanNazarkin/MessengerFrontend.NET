@@ -15,6 +15,8 @@ namespace MessengerFrontend.Controllers
 
         private string Token => HttpContext.Session.GetString("Token");
 
+        #region Constructor
+
         public ChatController(IChatServiceAPI chatServiceAPI,
             IMessageServiceAPI messageServiceAPI,
             IAccountServiceAPI accountServiceAPI)
@@ -23,6 +25,10 @@ namespace MessengerFrontend.Controllers
             _messageServiceAPI = messageServiceAPI;
             _accountServiceAPI = accountServiceAPI;
         }
+
+        #endregion
+
+        #region Services
 
         [AuthorizationFilter]
         [HttpGet]
@@ -172,5 +178,7 @@ namespace MessengerFrontend.Controllers
 
             return Redirect(RoutesApp.Home);
         }
+
+        #endregion
     }
 }
