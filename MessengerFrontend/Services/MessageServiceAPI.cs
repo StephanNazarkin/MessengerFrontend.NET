@@ -1,4 +1,5 @@
-﻿using MessengerFrontend.Models.Messages;
+using MessengerFrontend.Exceptions;
+using MessengerFrontend.Models.Messages;
 using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
 using System.Net.Http.Headers;
@@ -6,25 +7,24 @@ using System.Text.Json;
 
 namespace MessengerFrontend.Services
 {
-    public class MessageServiceAPI : IMessageServiceAPI
+    public class MessageServiceAPI : BaseServiceAPI, IMessageServiceAPI
     {
-        private readonly HttpClient _httpClient;
-
         #region Constructor
-
-        public MessageServiceAPI(IHttpClientFactory httpClientFactory)
-        {
-            _httpClient = httpClientFactory.CreateClient("Messenger");
-        }
-
+        
+        public MessageServiceAPI(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor)
+        { }
+        
         #endregion
 
         #region Services
 
-        public async Task<MessageViewModel> GetMessage(int messageId, string token)
+        public async Task<MessageViewModel> GetMessage(int messageId)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetMessage, messageId));
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new LoadMessagesException("Sorry, we can't load this message. It's most likely a server or connection issue.");
+            }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
@@ -32,10 +32,13 @@ namespace MessengerFrontend.Services
             return message;
         }
 
-        public async Task<IEnumerable<MessageViewModel>> GetMessagesFromChat(int chatId, string token)
+        public async Task<IEnumerable<MessageViewModel>> GetMessagesFromChat(int chatId)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetMessagesFromChat, chatId));
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new LoadMessagesException("Sorry, we can't load messages from this chat. It's most likely a server or connection issue.");
+            }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var messages = await JsonSerializer.DeserializeAsync<IEnumerable<MessageViewModel>>(contentStream);
@@ -43,7 +46,7 @@ namespace MessengerFrontend.Services
             return messages;
         }
 
-        public async Task<bool> SendMessage(MessageCreateModel model, string token)
+        public async Task<bool> SendMessage(MessageCreateModel model)
         {
             if (model.Text is null && model.Files is null)
             {
@@ -69,7 +72,6 @@ namespace MessengerFrontend.Services
                 }
             }
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PostAsync(RoutesAPI.SendMessage, content);
 
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
@@ -84,10 +86,13 @@ namespace MessengerFrontend.Services
             return true;
         }
 
-        public async Task<MessageViewModel> EditMessage(MessageUpdateModel model, string token)
+        public async Task<MessageViewModel> EditMessage(MessageUpdateModel model)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.EditMessage, model);
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new MessageException("Something went wrong, when you tried to edit your message.");
+            }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
@@ -95,10 +100,13 @@ namespace MessengerFrontend.Services
             return message;
         }
 
-        public async Task<bool> DeleteMessage(int id, string token)
+        public async Task<bool> DeleteMessage(int id)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.SoftDeleteMessage, id);
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new MessageException("Something went wrong, when you tried to delete your message.");
+            }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var result = await JsonSerializer.DeserializeAsync<bool>(contentStream);

@@ -12,5 +12,8 @@ namespace MessengerFrontend.Models.Users
 
         [JsonPropertyName("email")]
         public string Email { get; set; }
+
+        [JsonPropertyName("file")]
+        public IFormFile? File { get; set; }
     }
 }

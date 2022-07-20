@@ -3,6 +3,9 @@
     ViewData["Title"] = "Profile";
 }
 
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 <style>
     input[type=submit]{
         width: 430px;  
@@ -25,7 +28,8 @@
                     Home
                   </button>
                 </form>
-              <h2 class="text-uppercase text-center mb-5">@ViewBag.CurrentUser.UserName Settings</h2>
+                <img src="@(Configuration["Api"] + @ViewBag.CurrentUser.Image.Path)" alt="image" class = "img-thumbnail rounded-circle flex-shrink-0 me-1" style="width: 200px; height: 200px; object-fit: cover; margin-left: 30%; margin-right: 20%;">
+                <h2 class="text-uppercase text-center mb-5">@ViewBag.CurrentUser.UserName Settings</h2>
                 <div class="d-grid gap-2">
 
                     <a href="~/Account/EditProfileModal" class="btn btn-outline-primary modal-link" data-bs-toggle="modal" data-bs-target="#modalWindow">

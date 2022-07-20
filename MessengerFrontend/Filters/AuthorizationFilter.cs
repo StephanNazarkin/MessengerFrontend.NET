@@ -7,7 +7,7 @@ namespace MessengerFrontend.Filters
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (context.HttpContext.Session.GetString("Token") == "")
+            if (string.IsNullOrEmpty(context.HttpContext.Session.GetString("Token")))
             {
                 context.Result = new RedirectResult("~/Account/Login");
             }

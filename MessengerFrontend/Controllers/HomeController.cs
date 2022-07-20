@@ -1,4 +1,4 @@
-﻿using MessengerFrontend.Filters;
+using MessengerFrontend.Filters;
 using MessengerFrontend.Models;
 using MessengerFrontend.Services;
 using MessengerFrontend.Services.Interfaces;
@@ -27,7 +27,7 @@ namespace MessengerFrontend.Controllers
         [AuthorizationFilter]
         public async Task<IActionResult> Index()
         {
-            var result = await _chatServiceAPI.GetAllChatrooms(Token);
+            var result = await _chatServiceAPI.GetAllChatrooms();
             ViewBag.AllChats = result;
             return View();
         }
