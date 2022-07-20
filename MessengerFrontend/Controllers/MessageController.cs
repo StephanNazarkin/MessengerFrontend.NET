@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerFrontend.Controllers
 {
+    [MessengerExceptionHandlerFilter]
     public class MessageController : Controller
     {
         private readonly IMessageServiceAPI _messageServiceAPI;

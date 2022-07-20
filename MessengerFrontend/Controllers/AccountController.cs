@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerFrontend.Controllers
 {
+    [MessengerExceptionHandlerFilter]
     public class AccountController : Controller
     {
         private readonly IAccountServiceAPI _accountServiceAPI;
@@ -19,7 +20,7 @@ namespace MessengerFrontend.Controllers
         {
             return View();
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> TryLogin(UserLoginModel model)
         {

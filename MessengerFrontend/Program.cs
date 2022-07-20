@@ -16,7 +16,6 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession();
 
-
 builder.Services.AddHttpClient("Messenger", httpClient =>
 {
     httpClient.BaseAddress = new Uri(builder.Configuration["Api"]);

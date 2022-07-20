@@ -61,7 +61,10 @@
                     {
                         <a href="~/Message/Index/@message.Id?chatId=@Model.Id" data-bs-toggle="modal" data-bs-target="#modal" class="modal-link"></a>
                     }
-                    <p class="from">@message.User.UserName</p>
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="@(Configuration["Api"] + message.User.Image.Path)" alt="image" class = "img-thumbnail rounded-circle flex-shrink-0 me-1" style="width: 40px; height: 40px; object-fit: cover;">
+                        <p class="from ms-1">@message.User.UserName</p>
+                    </div>
                     @if (message.Images is not null)
                     {
                         <div class="images">

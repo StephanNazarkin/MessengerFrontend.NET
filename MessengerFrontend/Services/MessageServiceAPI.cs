@@ -1,4 +1,5 @@
-﻿using MessengerFrontend.Models.Messages;
+﻿using MessengerFrontend.Exceptions;
+using MessengerFrontend.Models.Messages;
 using MessengerFrontend.Routes;
 using MessengerFrontend.Services.Interfaces;
 using System.Net.Http.Headers;
@@ -14,6 +15,10 @@ namespace MessengerFrontend.Services
         public async Task<MessageViewModel> GetMessage(int messageId)
         {
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetMessage, messageId));
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new LoadMessagesException("Sorry, we can't load this message. It's most likely a server or connection issue.");
+            }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
@@ -24,6 +29,10 @@ namespace MessengerFrontend.Services
         public async Task<IEnumerable<MessageViewModel>> GetMessagesFromChat(int chatId)
         {
             var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetMessagesFromChat, chatId));
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new LoadMessagesException("Sorry, we can't load messages from this chat. It's most likely a server or connection issue.");
+            }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var messages = await JsonSerializer.DeserializeAsync<IEnumerable<MessageViewModel>>(contentStream);
@@ -74,6 +83,10 @@ namespace MessengerFrontend.Services
         public async Task<MessageViewModel> EditMessage(MessageUpdateModel model)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.EditMessage, model);
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new MessageException("Something went wrong, when you tried to edit your message.");
+            }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
@@ -84,6 +97,10 @@ namespace MessengerFrontend.Services
         public async Task<bool> DeleteMessage(int id)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.SoftDeleteMessage, id);
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new MessageException("Something went wrong, when you tried to delete your message.");
+            }
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var result = await JsonSerializer.DeserializeAsync<bool>(contentStream);

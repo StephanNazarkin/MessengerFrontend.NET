@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerFrontend.Controllers
 {
+    [MessengerExceptionHandlerFilter]
     public class ChatController : Controller
     {
         private readonly IChatServiceAPI _chatServiceAPI;
@@ -41,7 +42,6 @@ namespace MessengerFrontend.Controllers
             return View(currentChat);
         }
 
-        [AuthorizationFilter]
         [HttpGet]
         public IActionResult CreateChat()
         {
