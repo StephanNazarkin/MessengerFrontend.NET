@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Serilog;
 
 namespace MessengerFrontend.Filters
 {
@@ -16,6 +17,8 @@ namespace MessengerFrontend.Filters
                             Content = $"{actionName} caused that exception: \n {exceptionMessage}"
                         };*/
             filterContext.ExceptionHandled = true;
+
+            Log.Information(exceptionMessage);
         }
     }
 }

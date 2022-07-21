@@ -1,8 +1,16 @@
 using MessengerFrontend.Services;
 using MessengerFrontend.Services.Interfaces;
 using System.Net.Http.Headers;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("log.txt",
+        rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
