@@ -197,7 +197,7 @@ namespace MessengerFrontend.Services
 
         public async void ChangePassword(UserChangePasswordModel userChangePasswordModel)
         {
-            var httpResponseMessage = await _httpClient.PostAsJsonAsync(RoutesAPI.ChangePassword, userChangePasswordModel);
+            var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.ChangePassword, userChangePasswordModel);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
                 throw new CurrentUserException("Something went wrong, when you tried to change your password.");
