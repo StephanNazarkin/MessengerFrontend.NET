@@ -205,6 +205,15 @@ namespace MessengerFrontend.Services
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
         }
 
+        public async Task<bool> IsUserSuperAdmin()
+        {
+            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.IsUserSuperAdmin);
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            var result = await JsonSerializer.DeserializeAsync<bool>(contentStream);
+
+            return result;
+        }
+
         #endregion
     }
 }

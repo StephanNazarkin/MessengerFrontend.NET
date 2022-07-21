@@ -19,6 +19,7 @@ builder.Services.AddTransient<IAccountServiceAPI, AccountServiceAPI>();
 builder.Services.AddTransient<IChatServiceAPI, ChatServiceAPI>();
 builder.Services.AddTransient<IMessageServiceAPI, MessageServiceAPI>();
 builder.Services.AddTransient<IAccountServiceAPI, AccountServiceAPI>();
+builder.Services.AddTransient<IActionLogServiceAPI, ActionLogServiceAPI>();
 
 builder.Services.AddDistributedMemoryCache();
 
