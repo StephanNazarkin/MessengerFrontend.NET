@@ -187,6 +187,7 @@ namespace MessengerFrontend.Controllers
             _accountServiceAPI.ChangePassword(userModel);
 
             Log.Information("Password changed");
+            LogOut();
 
             return Redirect(RoutesApp.Login);
         }
