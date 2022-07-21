@@ -34,6 +34,8 @@
 
         public const string ChangePassword = "Account/ChangePassword";
 
+        public const string IsUserSuperAdmin = "Account/IsUserSuperAdmin";
+
         #endregion
 
         #region Chatroom
@@ -79,6 +81,12 @@
         public const string GetMessage = "Message/GetMessage?messageId={0}";
 
         public const string GetMessagesFromChat = "Message/GetMessagesFromChat?chatId={0}";
+
+        #endregion
+
+        #region Logs
+
+        public const string GetAllLogs = "ActionLog/GetAllLogs";
 
         #endregion
     }

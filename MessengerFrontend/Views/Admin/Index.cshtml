@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+    Layout = "_Layout";
+}
+@using MessengerFrontend.Models.ActionLogs;
+<div class="container">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Action Name</th>
+          <th scope="col">User</th>
+          <th scope="col">Time</th>
+        </tr>
+      </thead>
+      <tbody>
+            @foreach (ActionLogViewModel log in ViewBag.Logs)
+            {
+                <tr>
+                  <th scope="row">@log.Id</th>
+                  <td>@log.ActionName</td>
+                  <td>@log.User.UserName</td>
+                  <td>@log.Time</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
