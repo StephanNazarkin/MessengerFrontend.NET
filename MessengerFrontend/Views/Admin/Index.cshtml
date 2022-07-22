@@ -4,25 +4,52 @@
 }
 @using MessengerFrontend.Models.ActionLogs;
 <div class="container">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Action Name</th>
-          <th scope="col">User</th>
-          <th scope="col">Time</th>
-        </tr>
-      </thead>
-      <tbody>
-            @foreach (ActionLogViewModel log in ViewBag.Logs)
-            {
+    <form asp-controller="Admin" asp-action="Index" method="get">
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Action Name</th>
+              <th scope="col">UserName</th>
+              <th scope="col">User ID</th>
+              <th scope="col">Time</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
                 <tr>
-                  <th scope="row">@log.Id</th>
-                  <td>@log.ActionName</td>
-                  <td>@log.User.UserName</td>
-                  <td>@log.Time</td>
+                    <th scope="row"></th>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="form-outline-sm">
+                            <input type="text" name="UserId" class="form-control form-control-lg"/>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-outline">
+                            <input type="date" name="Date" class="form-control form-control-lg"/>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-outline">
+                            <input type="submit" class="btn btn-primary" value="Find"/>
+                        </div>
+                    </td>
                 </tr>
-            }
-        </tbody>
-    </table>
+                @foreach (ActionLogViewModel log in ViewBag.Logs)
+                {
+                    <tr>
+                      <th scope="row">@log.Id</th>
+                      <td>@log.ActionName</td>
+                      <td>@log.User.UserName</td>
+                      <td>@log.User.Id</td>
+                      <td>@log.Time.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                      <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
 </div>

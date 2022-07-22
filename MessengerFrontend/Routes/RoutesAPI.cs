@@ -86,7 +86,7 @@
 
         #region Logs
 
-        public const string GetAllLogs = "ActionLog/GetAllLogs";
+        public const string GetAllLogs = "ActionLog/GetAllLogs?date={0}&userId={1}";
 
         #endregion
     }
