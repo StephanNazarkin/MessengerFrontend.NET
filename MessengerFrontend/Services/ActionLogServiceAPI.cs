@@ -12,9 +12,9 @@ namespace MessengerFrontend.Services
         public ActionLogServiceAPI(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor)
         { }
 
-        public async Task<IEnumerable<ActionLogViewModel>> GetAllLogs(DateTime? date = null)
+        public async Task<IEnumerable<ActionLogViewModel>> GetAllLogs(DateTime? date = null, string? userId = null)
         {
-            var httpResponseMessage = await _httpClient.GetAsync(RoutesAPI.GetAllLogs);
+            var httpResponseMessage = await _httpClient.GetAsync(string.Format(RoutesAPI.GetAllLogs, date, userId));
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
             var logs = await JsonSerializer.DeserializeAsync<IEnumerable<ActionLogViewModel>>(contentStream);

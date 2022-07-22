@@ -25,7 +25,7 @@ namespace MessengerFrontend.Controllers
 
         [AuthorizationFilter]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? date = null, string? userId = null)
         {
             bool isUserAdmin = await _accountServiceAPI.IsUserSuperAdmin();
 
@@ -34,7 +34,7 @@ namespace MessengerFrontend.Controllers
                 return Redirect(RoutesApp.Home);
             }
 
-            var logs = await _actionLogServiceAPI.GetAllLogs();
+            var logs = await _actionLogServiceAPI.GetAllLogs(date, userId);
 
             ViewBag.Logs = logs;
 
