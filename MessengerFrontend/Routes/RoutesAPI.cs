@@ -44,6 +44,8 @@
 
         public const string CreateChatroom = "Chatroom/CreateChatroom";
 
+        public const string CreateAdminsChatroom = "Chatroom/CreateAdminsChatroom";
+
         public const string EditChatroom = "Chatroom/EditChatroom";
 
         public const string SoftDeleteChatroom = "Chatroom/SoftDeleteChatroom";
@@ -73,6 +75,8 @@
         #region Message
 
         public const string SendMessage = "Message/SendMessage";
+
+        public const string SendAdminsMessage = "Message/SendAdminsMessage";
 
         public const string EditMessage = "Message/EditMessage";
 

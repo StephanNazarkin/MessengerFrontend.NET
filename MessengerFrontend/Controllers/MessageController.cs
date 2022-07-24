@@ -45,6 +45,15 @@ namespace MessengerFrontend.Controllers
 
         [AuthorizationFilter]
         [HttpPost]
+        public async Task<IActionResult> SendAdminsMessage(MessageCreateModel model)
+        {
+            bool response = await _messageServiceAPI.SendAdminsMessage(model);
+
+            return Redirect(string.Format(RoutesApp.Chat, model.ChatId));
+        }
+
+        [AuthorizationFilter]
+        [HttpPost]
         public async Task<IActionResult> Edit(MessageUpdateModel model)
         {
             var response = await _messageServiceAPI.EditMessage(model);

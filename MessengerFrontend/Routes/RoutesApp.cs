@@ -11,5 +11,7 @@
         public const string ConfirmEmail = "~/Account/ConfirmEmail";
 
         public const string Login = "~/Account/Login/";
+
+        public const string AdminsView = "~/Views/Chat/AdminsView.cshtml";
     }
 }

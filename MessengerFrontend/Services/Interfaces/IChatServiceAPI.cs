@@ -8,6 +8,7 @@ namespace MessengerFrontend.Services.Interfaces
         public Task<IEnumerable<ChatViewModel>> GetAllChatrooms();
         public Task<ChatViewModel> GetChatroom(int id);
         public Task<ChatViewModel> CreateChatroom(ChatCreateModel model);
+        public Task<ChatViewModel> CreateAdminsChatroom(ChatCreateModel model);
         public Task<ChatViewModel> EditChatroom(ChatUpdateModel model);
         public Task<bool> DeleteChatroom(int chatId);
         public Task<UserAccountViewModel> AddToChatroom(ChatInviteModel model);
