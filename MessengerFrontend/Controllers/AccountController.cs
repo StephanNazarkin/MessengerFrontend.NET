@@ -79,7 +79,7 @@ namespace MessengerFrontend.Controllers
             return Redirect(RoutesApp.Login);
         }
 
-        public async Task<IActionResult> SettingsAsync()
+        public async Task<IActionResult> Settings()
         {
             var currentUser = await _accountServiceAPI.GetCurrentUser();
             ViewBag.CurrentUser = currentUser;

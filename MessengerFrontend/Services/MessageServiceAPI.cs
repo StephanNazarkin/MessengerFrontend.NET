@@ -86,6 +86,46 @@ namespace MessengerFrontend.Services
             return true;
         }
 
+        public async Task<bool> SendAdminsMessage(MessageCreateModel model)
+        {
+            if (model.Text is null && model.Files is null)
+            {
+                return false;
+            }
+
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(model.ChatId.ToString()), "ChatId");
+
+            if (model.Text is not null)
+            {
+                content.Add(new StringContent(model.Text), "Text");
+            }
+
+            if (model.Files is not null)
+            {
+                foreach (IFormFile file in model.Files)
+                {
+                    var fileStream = new StreamContent(file.OpenReadStream());
+                    fileStream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                    content.Add(fileStream, "files", file.FileName);
+                }
+            }
+
+            var httpResponseMessage = await _httpClient.PostAsync(RoutesAPI.SendAdminsMessage, content);
+
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var message = await JsonSerializer.DeserializeAsync<MessageViewModel>(contentStream);
+
+            if (message is null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public async Task<MessageViewModel> EditMessage(MessageUpdateModel model)
         {
             var httpResponseMessage = await _httpClient.PutAsJsonAsync(RoutesAPI.EditMessage, model);
