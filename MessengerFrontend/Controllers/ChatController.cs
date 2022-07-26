@@ -39,11 +39,20 @@ namespace MessengerFrontend.Controllers
             var currentUserAccount = await _chatServiceAPI.GetCurrentUserAccount(id);
             var members = await _chatServiceAPI.GetAllMembers(id);
             var messages = await _messageServiceAPI.GetMessagesFromChat(id);
+            bool isUserAdmin = await _accountServiceAPI.IsUserSuperAdmin();
 
+            ViewBag.Layout = "_LayoutDefault";
+
+            if (isUserAdmin)
+            {
+                ViewBag.Layout = "_LayoutAdmin";
+            }
+            ViewBag.IsUserAdmin = isUserAdmin;
             ViewBag.AllChats = allChats;
             ViewBag.CurrentUserAccount = currentUserAccount;
             ViewBag.Members = members;
             ViewBag.Messages = messages.Reverse();
+            ViewBag.CurrentChat = currentChat;
 
             return View(currentChat);
         }
@@ -54,11 +63,26 @@ namespace MessengerFrontend.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult CreateAdminsChat()
+        {
+            return View();
+        }
+
         [AuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> CreateChat(ChatCreateModel model)
         {
             var response = await _chatServiceAPI.CreateChatroom(model);
+
+            return Redirect(string.Format(RoutesApp.Chat, response.Id));
+        }
+
+        [AuthorizationFilter]
+        [HttpPost]
+        public async Task<IActionResult> CreateAdminsChat(ChatCreateModel model)
+        {
+            var response = await _chatServiceAPI.CreateAdminsChatroom(model);
 
             return Redirect(string.Format(RoutesApp.Chat, response.Id));
         }

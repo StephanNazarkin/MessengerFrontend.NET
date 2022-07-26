@@ -21,5 +21,8 @@ namespace MessengerFrontend.Models.Chats
 
         [JsonPropertyName("messages")]
         public IEnumerable<MessageViewModel>? Messages { get; set; }
+
+        [JsonPropertyName("isAdminsRoom")]
+        public bool IsAdminsRoom { get; set; }
     }
 }

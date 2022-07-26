@@ -80,6 +80,37 @@ namespace MessengerFrontend.Services
             return response;
         }
 
+        public async Task<ChatViewModel> CreateAdminsChatroom(ChatCreateModel model)
+        {
+            if (string.IsNullOrEmpty(model.Topic))
+            {
+                throw new ChatroomException("Topic cannot be null");
+            }
+
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(model.Topic), "Topic");
+
+            if (model.File is not null)
+            {
+                var file = model.File;
+                var fileStream = new StreamContent(file.OpenReadStream());
+                fileStream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                content.Add(fileStream, "File", file.FileName);
+            }
+
+            var httpResponseMessage = await _httpClient.PostAsync(RoutesAPI.CreateAdminsChatroom, content);
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new ChatroomException("Something went wrong, when you tried to create a new admin room.");
+            }
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            var response = await JsonSerializer.DeserializeAsync<ChatViewModel>(contentStream);
+
+            return response;
+        }
+
         public async Task<ChatViewModel> EditChatroom(ChatUpdateModel model)
         {
             if (string.IsNullOrEmpty(model.Topic))
